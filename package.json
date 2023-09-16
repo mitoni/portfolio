@@ -1,0 +1,13 @@
+{
+  "name": "portfolio",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "bunx --bun astro dev",
+    "build": "bunx --bun astro build",
+    "preview": "bunx --bun astro preview"
+  },
+  "dependencies": {
+    "astro": "^3.0.12"
+  }
+}
