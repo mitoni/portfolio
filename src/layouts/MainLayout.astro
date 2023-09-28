@@ -1,0 +1,47 @@
+---
+import cssVars from "../style/cssVars";
+---
+
+<style define:vars={cssVars}>
+    html,
+    body {
+        min-width: 100%;
+        min-height: 100vh;
+
+        margin: 0;
+
+        background-color: var(--warmWhite);
+
+        color: var(--almostBlack);
+
+        font-family: var(--fontSans), sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+    }
+
+    #main {
+        max-width: 1600px;
+
+        margin-right: auto;
+        margin-left: auto;
+
+        padding-right: 1em;
+        padding-left: 1em;
+    }
+</style>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Michele Tonizzo Portfolio</title>
+    </head>
+
+    <body>
+        <main id="main">
+            <slot />
+        </main>
+    </body>
+</html>
