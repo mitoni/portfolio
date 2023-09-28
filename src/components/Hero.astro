@@ -1,6 +1,8 @@
 ---
 import "../style/fontFace.css";
 import cssVars from "../style/cssVars";
+
+import Balls from "../components/Balls.svelte";
 ---
 
 <style define:vars={cssVars}>
@@ -60,6 +62,8 @@ import cssVars from "../style/cssVars";
 </style>
 
 <section class="section">
+    <Balls client:only="svelte" />
+
     <div class="container">
         <div class="line" style="animation-delay: 0.4s">
             <span class="light">I'm</span><span style="padding-left: 36px"

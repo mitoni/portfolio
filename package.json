@@ -8,7 +8,9 @@
     "preview": "bunx --bun astro preview"
   },
   "dependencies": {
-    "astro": "^3.0.12"
+    "@astrojs/svelte": "^4.0.2",
+    "astro": "^3.0.12",
+    "svelte": "^4.2.1"
   },
   "devDependencies": {
     "prettier": "^3.0.3",
