@@ -82,7 +82,7 @@
         // trigger interval moves
         setInterval(() => {
             balls = getBalls();
-        }, 2000);
+        }, 3000);
     });
 
     // listen for mouse movement
@@ -117,7 +117,7 @@
         border-radius: 100%;
 
         transition-property: top left background-color;
-        transition-duration: 2s;
+        transition-duration: 3s;
         transition-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
     }
 </style>
