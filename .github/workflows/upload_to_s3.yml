@@ -25,7 +25,7 @@ jobs:
           SOURCE_DIR: 'dist'
 
       - uses: chetan/invalidate-cloudfront-action@v2
-        wnv:
+        env:
           AWS_CLOUDFRONT_DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION }}
           PATHS: "/*"
           AWS_REGION: ${{ secrets.AWS_REGION }}
