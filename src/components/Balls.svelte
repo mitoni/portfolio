@@ -1,13 +1,15 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+
     type TBall = {
         radius: number;
         left: number;
         top: number;
         color: string;
+        opacity: number;
     };
 
     const numberOfBalls = 20;
-    const deltaNumberOfBalls = 10;
 
     const ballRadius = 30;
     const deltaRadius = 10;
@@ -26,6 +28,7 @@
         "#9FC7FF",
         "#8ECCFE",
     ];
+
     const getShade = () => shades[Math.floor(Math.random() * shades.length)];
 
     const windowWidth = window.innerWidth;
@@ -36,13 +39,14 @@
 
     const getBalls = () => {
         return Array.from({
-            length: Math.floor(
-                numberOfBalls + (Math.random() - 1 * deltaNumberOfBalls)
-            ),
+            length: numberOfBalls,
         }).map(() => {
             const radius = Math.floor(
-                ballRadius + Math.random() * 2 - 1 * deltaRadius
+                ballRadius + (Math.random() * 2 - 1) * deltaRadius
             );
+
+            const opacity =
+                0.1 + (0.6 - 0.1) * (Math.floor(Math.random() * 100) / 100);
 
             // left
             let left = Math.floor(
@@ -67,21 +71,19 @@
                 radius,
                 left,
                 top,
+                opacity,
             };
         });
     };
 
     let balls: TBall[] = getBalls();
 
-    // trigger first iteration
-    setTimeout(() => {
-        balls = getBalls();
-    }, 10);
-
-    // trigger interval moves
-    setInterval(() => {
-        balls = getBalls();
-    }, 2000);
+    onMount(() => {
+        // trigger interval moves
+        setInterval(() => {
+            balls = getBalls();
+        }, 2000);
+    });
 
     // listen for mouse movement
     function handleMouseMove(event: MouseEvent) {
@@ -99,6 +101,7 @@
             style:top="{ball.top}px"
             style:left="{ball.left}px"
             style:background-color={ball.color}
+            style:opacity={ball.opacity}
         />
     {/each}
 </section>
@@ -112,7 +115,6 @@
     .ball {
         position: absolute;
         border-radius: 100%;
-        opacity: 0.5;
 
         transition-property: top left background-color;
         transition-duration: 2s;
