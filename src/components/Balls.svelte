@@ -15,9 +15,6 @@
     const deltaRadius = 10;
 
     const shades = [
-        "#FDB147",
-        "#FFA65F",
-        "#FF9E7B",
         "#FF9998",
         "#FF99B4",
         "#FF9DCF",
@@ -79,13 +76,11 @@
     let balls: TBall[] = getBalls();
 
     onMount(() => {
-        // trigger interval moves
         setInterval(() => {
             balls = getBalls();
         }, 3000);
     });
 
-    // listen for mouse movement
     function handleMouseMove(event: MouseEvent) {
         mouseX = event.clientX;
         mouseY = event.clientY;
@@ -110,13 +105,16 @@
     .section {
         position: absolute;
         inset: 0;
+
+        overflow: hidden;
     }
 
     .ball {
         position: absolute;
-        border-radius: 100%;
 
-        transition-property: top left background-color;
+        border-radius: 20%;
+
+        transition-property: all;
         transition-duration: 3s;
         transition-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
     }

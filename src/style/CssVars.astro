@@ -1,0 +1,23 @@
+<style is:global >
+    :root {
+        --fontSerif: "literata";
+        --fontMono: "archia";
+        --fontSans: "switzer";
+
+        --warmWhite: #F9F7F2;
+        --almostBlack: #141414;
+        --gray: #606060;
+
+        --colorBg: var(--warmWhite);
+        --colorText: var(--almostBlack);
+        --colorTextSecondary: var(--gray);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --colorBg: var(--almostBlack);
+            --colorText: var(--warmWhite);
+            --colorTextSecondary: var(--gray);
+        }
+    }
+</style>

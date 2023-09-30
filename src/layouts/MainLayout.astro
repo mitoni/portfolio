@@ -1,8 +1,8 @@
 ---
-import cssVars from "../style/cssVars";
+import CssVars from "../style/CssVars.astro";
 ---
 
-<style define:vars={cssVars}>
+<style>
     html,
     body {
         min-width: 100%;
@@ -10,9 +10,9 @@ import cssVars from "../style/cssVars";
 
         margin: 0;
 
-        background-color: var(--warmWhite);
+        background-color: var(--colorBg);
 
-        color: var(--almostBlack);
+        color: var(--colorText);
 
         font-family: var(--fontSans), sans-serif;
         font-size: 15px;
@@ -33,10 +33,15 @@ import cssVars from "../style/cssVars";
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="generator" content={Astro.generator} />
+
         <title>Michele Tonizzo Portfolio</title>
+
+        <CssVars />
     </head>
 
     <body>
