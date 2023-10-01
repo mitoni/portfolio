@@ -1,0 +1,13 @@
+---
+const { class: cls, ...props } = Astro.props;
+---
+
+<style>
+    .p {
+        line-height: 200%;
+    }
+</style>
+
+<p class:list={["p", cls]} {...props}>
+    <slot />
+</p>

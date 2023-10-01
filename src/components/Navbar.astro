@@ -1,0 +1,46 @@
+---
+import Menu from "./Menu.astro";
+---
+
+<style>
+    .navbar {
+        position: sticky;
+        top: 0;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        padding-top: var(--spacingSm);
+        padding-bottom: var(--spacingSm);
+    }
+
+    .logo {
+        all: unset;
+        cursor: pointer;
+
+        padding-left: var(--spacingMd);
+        padding-right: var(--spacingMd);
+
+        font-family: var(--fontMono);
+        font-weight: 600;
+    }
+
+    .divider {
+        flex: 1;
+        height: 1px;
+        background-color: var(--colorLine);
+
+        opacity: var(--opacityLight);
+
+        margin-left: 16.6%;
+        margin-right: 16.6%;
+    }
+</style>
+
+<nav class="navbar">
+    <a class="logo" href="/">mito</a>
+    <span class="divider"></span>
+    <Menu />
+</nav>

@@ -77,7 +77,7 @@
          url('/fonts/archia/archia-bold-webfont.woff2') format('woff2'),
          url('/fonts/archia/archia-bold-webfont.woff') format('woff'),
          url('/fonts/archia/archia-bold-webfont.ttf') format('truetype');
-    font-weight: normal;
+    font-weight: 800;
     font-style: normal;
 
 }

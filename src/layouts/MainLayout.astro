@@ -1,5 +1,9 @@
 ---
-import CssVars from "../style/CssVars.astro";
+import Navbar from "../components/Navbar.astro";
+import "../style/vars.css";
+
+import "../style/fontFace.css";
+import "../style/global.css";
 ---
 
 <style>
@@ -15,18 +19,18 @@ import CssVars from "../style/CssVars.astro";
         color: var(--colorText);
 
         font-family: var(--fontSans), sans-serif;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 400;
     }
 
-    #main {
+    main {
         max-width: 1600px;
 
         margin-right: auto;
         margin-left: auto;
 
-        padding-right: 1em;
-        padding-left: 1em;
+        padding-right: var(--spacingMd);
+        padding-left: var(--spacingMd);
     }
 </style>
 
@@ -40,12 +44,12 @@ import CssVars from "../style/CssVars.astro";
         <meta name="generator" content={Astro.generator} />
 
         <title>Michele Tonizzo Portfolio</title>
-
-        <CssVars />
     </head>
 
     <body>
-        <main id="main">
+        <main>
+            <slot name="hero" />
+            <Navbar />
             <slot />
         </main>
     </body>

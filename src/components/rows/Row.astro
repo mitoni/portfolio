@@ -1,0 +1,14 @@
+---
+const { class: cls, ...props } = Astro.props;
+---
+
+<style>
+    .row {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+</style>
+
+<section class:list={["row", cls]} {...props}>
+    <slot />
+</section>

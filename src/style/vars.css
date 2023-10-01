@@ -1,0 +1,64 @@
+:root {
+    --fontSerif: "literata";
+    --fontMono: "archia";
+    --fontSans: "switzer";
+
+    --fontSizeSm: 0.75em;
+    --fontSizeMd: 1em;
+    --fontSizeLg: 1.25em;
+
+    --white: #ffffff;
+    --warmWhite: #f9f7f2;
+    --almostBlack: #141414;
+    --gray: #606060;
+    --darkGray: #38393f;
+    --coolRed: #ee1133;
+
+    --spacingXs: 0.25em;
+    --spacingSm: 0.5em;
+    --spacingMd: 1em;
+    --spacingLg: 2em;
+
+    --radiusSm: 0.125em;
+    --radiusMd: 0.375em;
+    --radiusLg: 0.75em;
+
+    --transitionDuration: 0.25s;
+    --transitionTimingFunction: cubic-bezier(0.65, 0, 0.35, 1);
+
+    --opacityLight: 0.15;
+
+    --colorWhite: var(--white);
+
+    --colorBg: var(--warmWhite);
+
+    --colorText: var(--almostBlack);
+    --colorTextSecondary: var(--gray);
+
+    --colorLine: var(--almostBlack);
+
+    --colorSelection: var(--colorText);
+    --colorSelectionBg: var(--white);
+
+    --colorHighlightBg: var(--almostBlack);
+    --colorHighlightText: var(--warmWhite);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --colorWhite: var(--darkGray);
+
+        --colorBg: var(--almostBlack);
+
+        --colorText: var(--warmWhite);
+        --colorTextSecondary: var(--gray);
+
+        --colorLine: var(--warmWhite);
+
+        --colorSelection: var(--colorText);
+        --colorSelectionBg: var(--darkGray);
+
+        --colorHighlightBg: var(--warmWhite);
+        --colorHighlightText: var(--almostBlack);
+    }
+}

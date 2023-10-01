@@ -1,0 +1,6 @@
+::selection {
+    background-color: var(--colorSelectionBg);
+    color: var(--colorSelection);
+
+    border-radius: var(--radiusSm);
+}

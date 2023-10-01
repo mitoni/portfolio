@@ -1,0 +1,19 @@
+---
+const { class: cls, ...props } = Astro.props;
+---
+
+<style>
+    .highlight {
+        background-color: var(--colorHighlightBg);
+        color: var(--colorHighlightText);
+
+        border-radius: var(--radiusSm);
+
+        padding-left: var(--spacingXs);
+        padding-right: var(--spacingXs);
+    }
+</style>
+
+<span class:list={["highlight", cls]} , {...props}>
+    <slot />
+</span>

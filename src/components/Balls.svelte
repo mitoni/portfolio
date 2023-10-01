@@ -14,7 +14,7 @@
     const ballRadius = 30;
     const deltaRadius = 10;
 
-    const shades = [
+    /** const shades = [
         "#FF9998",
         "#FF99B4",
         "#FF9DCF",
@@ -24,9 +24,10 @@
         "#B7C0FF",
         "#9FC7FF",
         "#8ECCFE",
-    ];
+    ]; */
 
-    const getShade = () => shades[Math.floor(Math.random() * shades.length)];
+    // const getShade = () => shades[Math.floor(Math.random() * shades.length)];
+    const getShade = () => "#424753";
 
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
@@ -78,7 +79,7 @@
     onMount(() => {
         setInterval(() => {
             balls = getBalls();
-        }, 3000);
+        }, 4000);
     });
 
     function handleMouseMove(event: MouseEvent) {
@@ -114,7 +115,6 @@
 
         border-radius: 20%;
 
-        transition-property: all;
         transition-duration: 3s;
         transition-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
     }

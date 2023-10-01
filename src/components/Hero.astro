@@ -1,19 +1,17 @@
 ---
-import "../style/fontFace.css";
 import Balls from "../components/Balls.svelte";
+import Row from "./rows/Row.astro";
 ---
 
 <style>
-    .section {
+    .hero-row {
         width: 100%;
         height: 100vh;
 
-        display: grid;
         grid-template-rows: repeat(3, minmax(0, 1fr));
-        grid-template-columns: repeat(8, minmax(0, 1fr));
     }
 
-    .container {
+    .hero-container {
         grid-column: 3 / -1;
         grid-row: 2 / 3;
 
@@ -23,11 +21,11 @@ import Balls from "../components/Balls.svelte";
         align-items: start;
 
         font-weight: 150;
-        font-size: clamp(1em, -0.875rem + 8.75vw, 1.75rem);
+        font-size: clamp(1em, -0.875rem + 8.75vw, var(--fontSizeLg));
     }
 
     .light {
-        opacity: 0.15;
+        opacity: var(--opacityLight);
     }
 
     .serif {
@@ -37,13 +35,7 @@ import Balls from "../components/Balls.svelte";
 
     .line {
         transform-origin: bottom center;
-        animation: move-up 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-    }
-
-    @media only screen and (max-width: 600px) {
-        .container {
-            grid-column: 1 / -1;
-        }
+        animation: move-up 1s cubic-bezier(0.39, 0.575, 0.565, 1) both;
     }
 
     @keyframes move-up {
@@ -57,13 +49,19 @@ import Balls from "../components/Balls.svelte";
             transform: translateY(0);
         }
     }
+
+    @media only screen and (max-width: 600px) {
+        .hero-container {
+            grid-column: 1 / -1;
+        }
+    }
 </style>
 
-<section class="section">
+<Row class="hero-row">
     <Balls client:only />
 
-    <div class="container">
-        <div class="line" style={{ animationDelay: 0.4 }}>
+    <div class="hero-container">
+        <div class="line" style={{ animationDelay: "0.4s" }}>
             <span class="light">I'm</span><span style={{ paddingLeft: "36px" }}
                 >michele tonizzo</span
             >
@@ -71,18 +69,18 @@ import Balls from "../components/Balls.svelte";
 
         <div style="height: 1em;"></div>
 
-        <div class="line" style={{ animationDelay: 0.5 }}>
+        <div class="line" style={{ animationDelay: "0.6s" }}>
             <span class="light" style={{ paddingLeft: "29px" }}>a</span><span
                 style={{ paddingLeft: "25px" }}
                 >devoted <span class="serif">maker</span></span
             >
         </div>
 
-        <div class="line" style={{ animationDelay: 0.6 }}>
+        <div class="line" style={{ animationDelay: "0.8s" }}>
             &<span class="light" style={{ paddingLeft: "10px" }}>an</span><span
                 style={{ paddingLeft: "10px" }}
                 >enthusiastic <span class="serif">tech leader</span></span
             >
         </div>
     </div>
-</section>
+</Row>
