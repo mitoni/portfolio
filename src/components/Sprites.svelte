@@ -35,8 +35,8 @@
     const color1 = new Color(0x060047);
     const color2 = new Color(0xb3005e);
 
-    let currentGeometryIdx = 0;
     const shapes = ["boat.obj", "denture.obj", "pac.obj"];
+    let currentGeometryIdx = 0;
     let geometries: BufferGeometry[] = [];
 
     onMount(init);

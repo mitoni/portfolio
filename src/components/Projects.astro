@@ -1,29 +1,155 @@
 ---
+import { getCollection } from "astro:content";
+
+const { class: cls, ...props } = Astro.props;
+
 import Row from "./rows/Row.astro";
 import SectionTitle from "./text/SectionTitle.astro";
+import ProjectDisplay from "./WebGL/ProjectDisplay.svelte";
+
+const projects = await getCollection("projects");
+
+const rows = Math.max(Math.ceil(projects.length / 2), 12);
 ---
 
-<style>
+<style define:vars={{ rows }}>
     .projects {
         min-height: 200vh;
+        padding: var(--spacingMd);
     }
 
     .projects-section-title {
         grid-column: 2 / -1;
     }
 
-    .projects-row {
+    .projects-project-list {
+        grid-column: 5 / -1;
+        grid-row: 1 / -1;
+
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+    }
+
+    .projects-project-container {
+        cursor: pointer;
+
+        padding: var(--spacingMd);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        border-radius: var(--radiusMd);
+
+        transition-duration: var(--transitionDuration);
+        transition-timing-function: var(--transitionTimingFunction);
+
+        &:hover {
+            background-color: var(--colorWhite);
+        }
+
+        &:hover .projects-project-subtitle {
+            opacity: 1;
+        }
+    }
+
+    .projects-project-subtitle {
+        margin-bottom: var(--spacingLg);
+
+        font-size: var(--fontSizeSm);
+
+        color: var(--colorTextSecondary);
+
+        transition-duration: var(--transitionDuration);
+        transition-timing-function: var(--transitionTimingFunction);
+
+        opacity: 0;
+    }
+
+    .projects-project-title {
+        font-family: var(--fontSerif);
+        font-size: var(--fontSizeLg);
+    }
+
+    .projects-project-category {
+        font-family: var(--fontMono);
+        font-size: var(--fontSizeSm);
+
+        text-transform: uppercase;
+
+        color: var(--colorProjectsCategory);
+    }
+
+    .projects-display {
+        max-height: calc(100vh - var(--sizeNavbarY) - 2 * var(--spacingMd));
+
+        grid-column: 1 / 5;
+        grid-row: 1 / -1;
+
         position: sticky;
-        top: 35px;
+        top: var(--sizeNavbarY);
 
         padding: var(--spacingMd);
     }
+
+    .projects-project-visible-container {
+        display: flex;
+        flex-direction: column;
+    }
 </style>
 
-<section class="projects">
-    <Row class="projects-row">
-        <SectionTitle class:list={["projects-section-title"]}>
+<script>
+    import { selectedProject } from "./stores/selectedProject";
+
+    const projectsEl = document.querySelectorAll(".projects-project-container");
+
+    projectsEl.forEach((projectEl) => {
+        projectEl.addEventListener("mouseenter", handleMouseEnter);
+    });
+
+    function handleMouseEnter(event: Event) {
+        const target = event.target as HTMLElement;
+        const title = target?.querySelector(
+            ".projects-project-title",
+        )?.innerHTML;
+
+        if (title) {
+            selectedProject.set(title);
+        }
+    }
+</script>
+
+<Row class="projects" {...props}>
+    <section class="projects-display">
+        <SectionTitle class="projects-section-title">
             things I helped make
         </SectionTitle>
-    </Row>
-</section>
+
+        <ProjectDisplay client:only />
+    </section>
+
+    <section class="projects-project-list">
+        {
+            projects.map((project, i) => (
+                <div class="projects-project-container">
+                    <section>
+                        <span class="projects-project-subtitle">
+                            {project.data.subtitle}
+                        </span>
+                    </section>
+
+                    <section class="projects-project-visible-container">
+                        <span class="projects-project-category">
+                            {project.data.category}
+                        </span>
+
+                        <span class="projects-project-title">
+                            {project.data.title}
+                        </span>
+                    </section>
+                </div>
+            ))
+        }
+    </section>
+</Row>

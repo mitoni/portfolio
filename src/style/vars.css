@@ -3,7 +3,7 @@
     --fontMono: "archia";
     --fontSans: "switzer";
 
-    --fontSizeSm: 0.75em;
+    --fontSizeSm: 0.875em;
     --fontSizeMd: 1em;
     --fontSizeLg: 1.5em;
 
@@ -14,10 +14,11 @@
     --white: 255, 255, 255;
     --warmWhite: 249, 247, 242;
     --almostBlack: 20, 20, 20;
-    --gray: 96, 96, 96;
+    --gray: 156, 156, 156;
     --darkGray: 56, 57, 63;
 
     --red: 233, 0, 100;
+    --purple: 179, 0, 94;
 
     --spacingXs: 0.25em;
     --spacingSm: 0.5em;
@@ -52,7 +53,9 @@
 
     --colorSectionTitle: rgb(var(--red));
 
-    --colorNavbarBg: rgba(var(--warmWhite), 0.75);
+    --colorNavbarBg: rgba(var(--warmWhite), 0.55);
+
+    --colorProjectsCategory: rgb(var(--purple));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -72,6 +75,6 @@
         --colorHighlightBg: rgb(var(--warmWhite));
         --colorHighlightText: rgb(var(--almostBlack));
 
-        --colorNavbarBg: rgba(var(--almostBlack), 0.75);
+        --colorNavbarBg: rgba(var(--almostBlack), 0.55);
     }
 }
