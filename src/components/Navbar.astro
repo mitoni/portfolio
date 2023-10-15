@@ -12,8 +12,23 @@ import Menu from "./Menu.astro";
         justify-content: space-between;
         align-items: center;
 
-        padding-top: var(--spacingSm);
-        padding-bottom: var(--spacingSm);
+        padding-top: var(--spacingMd);
+        padding-bottom: var(--spacingMd);
+
+        height: var(--sizeNavbarY);
+
+        &:before {
+            position: absolute;
+            content: "";
+
+            width: 100%;
+            height: 100%;
+
+            background: var(--colorNavbarBg);
+            backdrop-filter: blur(30px);
+
+            z-index: 0;
+        }
     }
 
     .logo {
@@ -25,22 +40,12 @@ import Menu from "./Menu.astro";
 
         font-family: var(--fontMono);
         font-weight: 600;
-    }
 
-    .divider {
-        flex: 1;
-        height: 1px;
-        background-color: var(--colorLine);
-
-        opacity: var(--opacityLight);
-
-        margin-left: 16.6%;
-        margin-right: 16.6%;
+        z-index: 1;
     }
 </style>
 
 <nav class="navbar">
     <a class="logo" href="/">mito</a>
-    <span class="divider"></span>
     <Menu />
 </nav>

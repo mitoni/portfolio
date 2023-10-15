@@ -1,0 +1,29 @@
+---
+import Row from "./rows/Row.astro";
+import SectionTitle from "./text/SectionTitle.astro";
+---
+
+<style>
+    .projects {
+        min-height: 200vh;
+    }
+
+    .projects-section-title {
+        grid-column: 2 / -1;
+    }
+
+    .projects-row {
+        position: sticky;
+        top: 35px;
+
+        padding: var(--spacingMd);
+    }
+</style>
+
+<section class="projects">
+    <Row class="projects-row">
+        <SectionTitle class:list={["projects-section-title"]}>
+            things I helped make
+        </SectionTitle>
+    </Row>
+</section>

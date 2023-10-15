@@ -1,0 +1,25 @@
+---
+const { class: cls, ...props } = Astro.props;
+---
+
+<style>
+    .section-title {
+        font-family: var(--fontMono);
+        font-weight: var(--fontWeightSm);
+        text-transform: lowercase;
+
+        color: var(--colorSectionTitle);
+
+        &::before {
+            content: "| ";
+        }
+
+        &::after {
+            content: " |";
+        }
+    }
+</style>
+
+<span class:list={[cls, "section-title"]} , {...props}>
+    <slot />
+</span>

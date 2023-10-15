@@ -4,12 +4,13 @@ import Hero from "../components/Hero.astro";
 import Centered from "../components/rows/Centered.astro";
 import Big from "../components/text/Big.astro";
 import Highlight from "../components/text/Highlight.astro";
+import Projects from "../components/Projects.astro";
 ---
 
 <MainLayout>
     <Hero slot="hero" />
 
-    <Centered>
+    <Centered id="hello">
         <Big>
             I am an architect and a devoted maker.<br /> As an enthusiastic
             <Highlight>Technology and Product Leader</Highlight>, I have shaped
@@ -19,4 +20,6 @@ import Highlight from "../components/text/Highlight.astro";
             engineering and design teams.
         </Big>
     </Centered>
+
+    <Projects />
 </MainLayout>

@@ -8,12 +8,11 @@ const { class: cls, ...props } = Astro.props;
         color: var(--colorHighlightText);
 
         border-radius: var(--radiusSm);
-
-        padding-left: var(--spacingXs);
-        padding-right: var(--spacingXs);
     }
 </style>
 
 <span class:list={["highlight", cls]} , {...props}>
+    <span style={{ fontSize: "50%" }}>&nbsp;</span>
     <slot />
+    <span style={{ fontSize: "50%" }}>&nbsp;</span>
 </span>

@@ -1,18 +1,23 @@
 :root {
-    --fontSerif: "literata";
+    --fontSerif: "baskerville";
     --fontMono: "archia";
     --fontSans: "switzer";
 
     --fontSizeSm: 0.75em;
     --fontSizeMd: 1em;
-    --fontSizeLg: 1.25em;
+    --fontSizeLg: 1.5em;
 
-    --white: #ffffff;
-    --warmWhite: #f9f7f2;
-    --almostBlack: #141414;
-    --gray: #606060;
-    --darkGray: #38393f;
-    --coolRed: #ee1133;
+    --fontWeightSm: 200;
+    --fontWeightMd: 400;
+    --fontWeightLg: 600;
+
+    --white: 255, 255, 255;
+    --warmWhite: 249, 247, 242;
+    --almostBlack: 20, 20, 20;
+    --gray: 96, 96, 96;
+    --darkGray: 56, 57, 63;
+
+    --red: 233, 0, 100;
 
     --spacingXs: 0.25em;
     --spacingSm: 0.5em;
@@ -26,39 +31,47 @@
     --transitionDuration: 0.25s;
     --transitionTimingFunction: cubic-bezier(0.65, 0, 0.35, 1);
 
-    --opacityLight: 0.15;
+    --sizeNavbarY: 35px;
 
-    --colorWhite: var(--white);
+    --opacityLight: 0.25;
 
-    --colorBg: var(--warmWhite);
+    --colorWhite: rgb(var(--white));
 
-    --colorText: var(--almostBlack);
-    --colorTextSecondary: var(--gray);
+    --colorBg: rgb(var(--warmWhite));
 
-    --colorLine: var(--almostBlack);
+    --colorText: rgb(var(--almostBlack));
+    --colorTextSecondary: rgb(var(--gray));
 
-    --colorSelection: var(--colorText);
-    --colorSelectionBg: var(--white);
+    --colorLine: rgb(var(--almostBlack));
 
-    --colorHighlightBg: var(--almostBlack);
-    --colorHighlightText: var(--warmWhite);
+    --colorSelection: rgb(var(--almostBlack));
+    --colorSelectionBg: rgb(var(--white));
+
+    --colorHighlightBg: rgb(var(--almostBlack));
+    --colorHighlightText: rgb(var(--warmWhite));
+
+    --colorSectionTitle: rgb(var(--red));
+
+    --colorNavbarBg: rgba(var(--warmWhite), 0.75);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --colorWhite: var(--darkGray);
+        --colorWhite: rgb(var(--darkGray));
 
-        --colorBg: var(--almostBlack);
+        --colorBg: rgb(var(--almostBlack))  ;
 
-        --colorText: var(--warmWhite);
-        --colorTextSecondary: var(--gray);
+        --colorText: rgb(var(--warmWhite));
+        --colorTextSecondary: rgb(var(--gray));
 
-        --colorLine: var(--warmWhite);
+        --colorLine: rgb(var(--warmWhite));
 
-        --colorSelection: var(--colorText);
-        --colorSelectionBg: var(--darkGray);
+        --colorSelection: rgb(var(--warmWhite));
+        --colorSelectionBg: rgb(var(--darkGray));
 
-        --colorHighlightBg: var(--warmWhite);
-        --colorHighlightText: var(--almostBlack);
+        --colorHighlightBg: rgb(var(--warmWhite));
+        --colorHighlightText: rgb(var(--almostBlack));
+
+        --colorNavbarBg: rgba(var(--almostBlack), 0.75);
     }
 }

@@ -14,7 +14,7 @@
     const ballRadius = 30;
     const deltaRadius = 10;
 
-    /** const shades = [
+    /* const shades = [
         "#FF9998",
         "#FF99B4",
         "#FF9DCF",
@@ -27,15 +27,23 @@
     ]; */
 
     // const getShade = () => shades[Math.floor(Math.random() * shades.length)];
-    const getShade = () => "#424753";
 
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
     let mouseX: number | undefined = undefined;
     let mouseY: number | undefined = undefined;
+    let pX: number | undefined = undefined;
+    let pY: number | undefined = undefined;
+    let ballsEl: HTMLElement | undefined = undefined;
+
+    const color = window?.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "linear-gradient(to top, #16222a, #3a6073)"
+        : "linear-gradient(to top, #ff416c, #ff4b2b)";
 
     const getBalls = () => {
+        // const color = getShade();
+
         return Array.from({
             length: numberOfBalls,
         }).map(() => {
@@ -62,8 +70,6 @@
                 top += (mouseY - top) * Math.random();
             }
 
-            const color = getShade();
-
             return {
                 color,
                 radius,
@@ -77,18 +83,36 @@
     let balls: TBall[] = getBalls();
 
     onMount(() => {
+        setTimeout(() => {
+            balls = getBalls();
+        }, 100);
+
         setInterval(() => {
             balls = getBalls();
-        }, 4000);
+        }, 3000);
     });
 
+    const moveMult = 30;
     function handleMouseMove(event: MouseEvent) {
         mouseX = event.clientX;
         mouseY = event.clientY;
+
+        pX = (mouseX / window.innerWidth - 0.5) * moveMult;
+        pY = (mouseY / window.innerWidth - 0.5) * moveMult;
+
+        // move the canvas
+        if (ballsEl) {
+            ballsEl.style.transform = `rotateY(${pX}deg) rotateX(${pY}deg)`;
+        }
     }
 </script>
 
-<section class="section" aria-label="move" on:mousemove={handleMouseMove}>
+<section
+    class="balls"
+    aria-label="move"
+    bind:this={ballsEl}
+    on:mousemove={handleMouseMove}
+>
     {#each balls as ball}
         <div
             class="ball"
@@ -96,26 +120,28 @@
             style:height="{ball.radius}px"
             style:top="{ball.top}px"
             style:left="{ball.left}px"
-            style:background-color={ball.color}
+            style:background={ball.color}
             style:opacity={ball.opacity}
         />
     {/each}
 </section>
 
 <style>
-    .section {
+    .balls {
         position: absolute;
         inset: 0;
 
         overflow: hidden;
+
+        transition-duration: 250ms;
     }
 
     .ball {
         position: absolute;
 
-        border-radius: 20%;
+        border-radius: 100%;
 
         transition-duration: 3s;
-        transition-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
+        transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
     }
 </style>
