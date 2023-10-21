@@ -1,7 +1,7 @@
 import { z, defineCollection } from 'astro:content';
 
 const projects = defineCollection({
-    type: 'content',
+    type: 'data',
     schema: z.object({
         title: z.string(),
         category: z.enum(["product", "software", "architecture", "experiment"]),
