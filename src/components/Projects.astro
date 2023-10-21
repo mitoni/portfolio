@@ -8,14 +8,15 @@ import SectionTitle from "./text/SectionTitle.astro";
 import ProjectDisplay from "./WebGL/ProjectDisplay.svelte";
 
 const projects = await getCollection("projects");
+console.log({ projects });
 
-const rows = Math.max(Math.ceil(projects.length / 2), 12);
+const rows = Math.max(Math.ceil(projects.length / 2), 8);
 ---
 
 <style define:vars={{ rows }}>
     .projects {
-        min-height: 200vh;
-        padding: var(--spacingMd);
+        padding-left: var(--spacingMd);
+        padding-right: var(--spacingMd);
     }
 
     .projects-section-title {
@@ -32,8 +33,6 @@ const rows = Math.max(Math.ceil(projects.length / 2), 12);
     }
 
     .projects-project-container {
-        cursor: pointer;
-
         padding: var(--spacingMd);
 
         display: flex;
@@ -55,8 +54,6 @@ const rows = Math.max(Math.ceil(projects.length / 2), 12);
     }
 
     .projects-project-subtitle {
-        margin-bottom: var(--spacingLg);
-
         font-size: var(--fontSizeSm);
 
         color: var(--colorTextSecondary);
@@ -69,6 +66,7 @@ const rows = Math.max(Math.ceil(projects.length / 2), 12);
 
     .projects-project-title {
         font-family: var(--fontSerif);
+        font-weight: var(--fontWeightLg);
         font-size: var(--fontSizeLg);
     }
 
@@ -79,6 +77,16 @@ const rows = Math.max(Math.ceil(projects.length / 2), 12);
         text-transform: uppercase;
 
         color: var(--colorProjectsCategory);
+
+        padding-bottom: var(--spacingXs);
+
+        &::before {
+            content: "/ ";
+        }
+    }
+
+    .projects-project-spacer {
+        height: var(--spacingLg);
     }
 
     .projects-display {
@@ -90,7 +98,8 @@ const rows = Math.max(Math.ceil(projects.length / 2), 12);
         position: sticky;
         top: var(--sizeNavbarY);
 
-        padding: var(--spacingMd);
+        padding-top: var(--spacingMd);
+        padding-bottom: var(--spacingMd);
     }
 
     .projects-project-visible-container {
@@ -102,11 +111,18 @@ const rows = Math.max(Math.ceil(projects.length / 2), 12);
 <script>
     import { selectedProject } from "./stores/selectedProject";
 
-    const projectsEl = document.querySelectorAll(".projects-project-container");
+    attachListeners();
+    document.addEventListener("astro:after-swap", attachListeners);
 
-    projectsEl.forEach((projectEl) => {
-        projectEl.addEventListener("mouseenter", handleMouseEnter);
-    });
+    function attachListeners() {
+        const projectsEl = document.querySelectorAll(
+            ".projects-project-container",
+        );
+
+        projectsEl.forEach((projectEl) => {
+            projectEl.addEventListener("mouseenter", handleMouseEnter);
+        });
+    }
 
     function handleMouseEnter(event: Event) {
         const target = event.target as HTMLElement;
@@ -132,12 +148,17 @@ const rows = Math.max(Math.ceil(projects.length / 2), 12);
     <section class="projects-project-list">
         {
             projects.map((project, i) => (
-                <div class="projects-project-container">
+                <a
+                    href={`/projects/${project.id}`}
+                    class="projects-project-container"
+                >
                     <section>
                         <span class="projects-project-subtitle">
                             {project.data.subtitle}
                         </span>
                     </section>
+
+                    <section class="projects-project-spacer" />
 
                     <section class="projects-project-visible-container">
                         <span class="projects-project-category">
@@ -148,7 +169,7 @@ const rows = Math.max(Math.ceil(projects.length / 2), 12);
                             {project.data.title}
                         </span>
                     </section>
-                </div>
+                </a>
             ))
         }
     </section>

@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { getCollection } from "astro:content";
     import {
+        Color,
         DoubleSide,
         FogExp2,
         Mesh,
@@ -17,11 +18,12 @@
 
     import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
     import { selectedProject } from "../stores/selectedProject";
+    import { style } from "../stores/style";
 
     const loader = new OBJLoader();
     const textureLoader = new TextureLoader();
 
-    const morphingTime = 250;
+    const morphingTime = 500;
 
     let container: HTMLElement | undefined = undefined;
     let camera: PerspectiveCamera;
@@ -43,7 +45,10 @@
         camera.lookAt(new Vector3(0, 0, 0));
 
         scene = new Scene();
-        scene.fog = new FogExp2(0xf7f2f9, 0.00075);
+        scene.fog = new FogExp2(
+            `${style.get().getPropertyValue("--colorBg")})`,
+            0.00075
+        );
 
         renderer = new WebGLRenderer({ antialias: true, alpha: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -73,22 +78,42 @@
 
     async function loadModels() {
         const projects = await getCollection("projects");
-        const shapes = projects.map((project) => project.data.mesh);
+
+        const shapes = projects.map((project) => project.data.projectMesh);
         const titles = projects.map((project) => project.data.title);
 
         const geometries = await Promise.all(
-            shapes.map(async (path) => {
-                const obj = await loader.loadAsync("/meshes/" + path);
+            shapes.map(async (path, i) => {
+                const obj = await loader.loadAsync(path);
                 const geometry = (obj.children[0] as Mesh).geometry;
+                geometry.userData.category = projects[i].data.category;
                 return geometry;
             })
         );
 
-        const texture = await textureLoader.loadAsync(
-            "/textures/white_material.png"
+        const texture = await textureLoader.loadAsync("/textures/gray.png");
+        const categories = new Set(
+            projects.map((project) => project.data.category)
         );
 
-        const material = new MeshMatcapMaterial({
+        const color1 = new Color(
+            `rgb(${style.get().getPropertyValue("--red")})`
+        );
+
+        const color2 = new Color(
+            `rgb(${style.get().getPropertyValue("--purple")})`
+        );
+
+        const categoriesColors: Record<string, Color> = {};
+
+        Array.from(categories.keys()).forEach((category, i) => {
+            const t = i / (categories.size - 1) || 0;
+            const color = new Color().lerpColors(color1, color2, t);
+
+            categoriesColors[category] = color;
+        });
+
+        const baseMaterial = new MeshMatcapMaterial({
             matcap: texture,
             side: DoubleSide,
             alphaTest: 0.5,
@@ -97,7 +122,10 @@
         });
 
         geometries.forEach((geometry, i) => {
-            const mesh = new Mesh(geometry, material.clone());
+            const material = baseMaterial.clone();
+            material.color = categoriesColors[geometry.userData.category];
+
+            const mesh = new Mesh(geometry, material);
             mesh.visible = false;
 
             meshes[titles[i]] = mesh;
@@ -116,16 +144,28 @@
                     : mesh.material;
 
                 if (material.opacity > 0) {
-                    new TWEEN.Tween(mesh.material)
-                        .to({ opacity: 0 }, morphingTime)
+                    new TWEEN.Tween(mesh)
+                        .to(
+                            {
+                                material: { opacity: 0 },
+                                scale: new Vector3(0.5, 0.5, 0.5),
+                            },
+                            morphingTime
+                        )
                         .easing(TWEEN.Easing.Exponential.InOut)
                         .onComplete(() => (mesh.visible = false))
                         .start();
                 }
             });
 
-            new TWEEN.Tween(mesh.material)
-                .to({ opacity: 1 }, morphingTime)
+            new TWEEN.Tween(mesh)
+                .to(
+                    {
+                        material: { opacity: 1 },
+                        scale: new Vector3(1, 1, 1),
+                    },
+                    morphingTime
+                )
                 .easing(TWEEN.Easing.Exponential.InOut)
                 .onStart(() => (mesh.visible = true))
                 .start();

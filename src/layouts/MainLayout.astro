@@ -4,6 +4,7 @@ import "../style/vars.css";
 
 import "../style/fontFace.css";
 import "../style/global.css";
+import Footer from "../components/Footer.astro";
 ---
 
 <style>
@@ -19,8 +20,8 @@ import "../style/global.css";
         color: var(--colorText);
 
         font-family: var(--fontSans), sans-serif;
-        font-size: 14px;
-        font-weight: 400;
+        font-size: 15px;
+        font-weight: 300;
     }
 
     main {
@@ -51,6 +52,7 @@ import "../style/global.css";
             <slot name="hero" />
             <Navbar />
             <slot />
+            <Footer />
         </main>
     </body>
 </html>

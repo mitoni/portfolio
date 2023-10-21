@@ -8,3 +8,8 @@
 html {
     scroll-behavior: smooth;
 }
+
+a, button {
+    all: unset;
+    cursor: pointer;
+}

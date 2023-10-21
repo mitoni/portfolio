@@ -6,6 +6,12 @@ const { class: cls, ...props } = Astro.props;
     .row {
         display: grid;
         grid-template-columns: repeat(8, minmax(0, 1fr));
+
+        padding-top: var(--spacingXl);
+        padding-bottom: var(--spacingXl);
+
+        padding-left: var(--spacingMd);
+        padding-right: var(--spacingMd);
     }
 </style>
 

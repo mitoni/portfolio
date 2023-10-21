@@ -1,0 +1,63 @@
+---
+import ProjectHero from "../../components/ProjectHero.astro";
+import Centered from "../../components/rows/Centered.astro";
+import ColsLeft from "../../components/rows/ColsLeft.astro";
+import { Image } from "astro:assets";
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import CenteredText from "../../components/rows/CenteredText.astro";
+import { getEntry } from "astro:content";
+
+const project = await getEntry("projects", "mambo");
+---
+
+<ProjectLayout>
+    <ProjectHero
+        title={project.data.title}
+        subtitle={project.data.subtitle}
+        category={project.data.category}
+        cover={project.data.cover}
+    />
+
+    <Centered>
+        <p slot="pre">Published on:</p>
+
+        <Image
+            src="/assets/projects/mambo/forbes-logo.png"
+            alt="Forbes logo"
+            width={100}
+            height={100}
+        />
+
+        <Image
+            src="/assets/projects/mambo/boat-logo.png"
+            alt="Forbes logo"
+            width={100}
+            height={100}
+        />
+
+        <Image
+            src="/assets/projects/mambo/robb-report-logo.png"
+            alt="Forbes logo"
+            width={100}
+            height={100}
+        />
+    </Centered>
+
+    <ColsLeft>
+        <div slot="col1">
+            <h3>Oh yeah</h3>
+            <p>Hello</p>
+        </div>
+
+        <div slot="col2">
+            <video
+                autoplay
+                controls
+                src="/assets/projects/mambo/mambo-video.mp4"
+            >
+            </video>
+        </div>
+
+        <CenteredText>Oh wow</CenteredText>
+    </ColsLeft>
+</ProjectLayout>

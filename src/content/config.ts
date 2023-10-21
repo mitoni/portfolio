@@ -6,7 +6,9 @@ const projects = defineCollection({
         title: z.string(),
         category: z.enum(["product", "software", "architecture", "experiment"]),
         subtitle: z.string(),
-        mesh: z.string()
+        cover: z.string(),
+        heroMesh: z.optional(z.string()),
+        projectMesh: z.string(),
     })
 })
 

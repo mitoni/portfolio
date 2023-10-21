@@ -1,0 +1,25 @@
+---
+import Row from "../rows/Row.astro";
+---
+
+<style>
+    .centered-text-container {
+        grid-column: 3 / 7;
+
+        display: block;
+
+        text-align: center;
+
+        font-size: var(--fontSizeLg);
+        font-weight: var(--fontWeightSm);
+        font-family: var(--fontSans);
+
+        line-height: 150%;
+    }
+</style>
+
+<Row>
+    <section class="centered-text-container">
+        <slot />
+    </section>
+</Row>

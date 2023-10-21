@@ -1,0 +1,18 @@
+h3 {
+    font-family: var(--fontMono);
+    font-size: var(--fontSizeLg);
+    font-weight: var(--fontWeightMd);
+
+    text-transform: uppercase;
+}
+
+p {
+    font-family: var(--fontSerif);
+
+    color: var(--colorTextSecondary);
+}
+
+video {
+    width: 100%;
+    height: 100%;
+}

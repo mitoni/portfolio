@@ -1,11 +1,11 @@
 ---
 import Sprites from "../components/Sprites.svelte";
 import Row from "./rows/Row.astro";
+import Highlight from "./text/Highlight.astro";
 ---
 
 <style>
     .hero-row {
-        width: 100%;
         height: 100vh;
 
         grid-template-rows: repeat(3, minmax(0, 1fr));
@@ -26,12 +26,6 @@ import Row from "./rows/Row.astro";
 
     .light {
         opacity: var(--opacityLight);
-    }
-
-    .serif {
-        font-family: var(--fontSerif);
-        font-weight: var(--fontWeightLg);
-        font-size: 1.15em;
     }
 
     .line {
@@ -73,14 +67,14 @@ import Row from "./rows/Row.astro";
         <div class="line" style={{ animationDelay: "0.6s" }}>
             <span class="light" style={{ paddingLeft: "29px" }}>a</span><span
                 style={{ paddingLeft: "25px" }}
-                >devoted <span class="serif">maker</span></span
+                >devoted <Highlight>maker</Highlight></span
             >
         </div>
 
         <div class="line" style={{ animationDelay: "0.8s" }}>
             &<span class="light" style={{ paddingLeft: "10px" }}>an</span><span
                 style={{ paddingLeft: "10px" }}
-                >enthusiastic <span class="serif">tech leader</span></span
+                >enthusiastic <Highlight>tech leader</Highlight></span
             >
         </div>
     </div>

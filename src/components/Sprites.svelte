@@ -17,6 +17,8 @@
 
     import TWEEN from "@tweenjs/tween.js";
     import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+    import { style } from "./stores/style";
+    import { getCollection } from "astro:content";
 
     const loader = new OBJLoader();
 
@@ -29,23 +31,25 @@
     let mouseX: number = 0;
     let mouseY: number = 0;
 
-    const morphingTime = 1000;
+    const morphingTime = 1250;
 
     const numOfParticles = 15000;
-    const color1 = new Color(0x060047);
-    const color2 = new Color(0xb3005e);
 
-    const shapes = ["boat.obj", "denture.obj", "pac.obj"];
+    const color1 = new Color(`rgb(${style.get().getPropertyValue("--red")})`);
+    const color2 = new Color(
+        `rgb(${style.get().getPropertyValue("--purple")})`
+    );
+
+    let shapes: string[] = [];
     let currentGeometryIdx = 0;
     let geometries: BufferGeometry[] = [];
 
     onMount(init);
 
     function init() {
-        const windowHeight = window.innerHeight;
-        const windowWidth = window.innerWidth;
+        const { width, height } = container!.getBoundingClientRect();
 
-        camera = new PerspectiveCamera(50, windowWidth / windowHeight, 1, 2000);
+        camera = new PerspectiveCamera(60, width / height, 1, 2000);
 
         camera.position.setZ(1000);
 
@@ -91,12 +95,15 @@
         particles = new Points(geometry, material);
 
         scene = new Scene();
-        scene.fog = new FogExp2(0xf7f2f9, 0.00075);
+        scene.fog = new FogExp2(
+            `${style.get().getPropertyValue("--colorBg")})`,
+            0.00075
+        );
         scene.add(particles);
 
         renderer = new WebGLRenderer({ antialias: true, alpha: true });
         renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(windowWidth, windowHeight);
+        renderer.setSize(width, height);
 
         container?.appendChild(renderer.domElement);
 
@@ -126,9 +133,12 @@
     }
 
     async function loadModels() {
+        const projects = await getCollection("projects");
+        shapes = projects.map((project) => project.data.heroMesh);
+
         geometries = await Promise.all(
             shapes.map(async (path) => {
-                const obj = await loader.loadAsync("/meshes/" + path);
+                const obj = await loader.loadAsync(path);
                 const geometry = (obj.children[0] as Mesh).geometry;
                 return geometry;
             })
@@ -171,7 +181,7 @@
     function morph(array: TypedArray) {
         new TWEEN.Tween(particles.geometry.attributes.position.array)
             .to(array, morphingTime)
-            .easing(TWEEN.Easing.Exponential.InOut)
+            .easing(TWEEN.Easing.Elastic.Out)
             .onUpdate(update)
             .start();
     }

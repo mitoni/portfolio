@@ -3,23 +3,40 @@ const { class: cls, ...props } = Astro.props;
 ---
 
 <style>
+    .section-title-wrapper {
+        transform-origin: bottom left;
+        transform: rotate(90deg);
+    }
+
     .section-title {
         font-family: var(--fontMono);
         font-weight: var(--fontWeightSm);
+        font-size: var(--fontSizeMd);
+
         text-transform: lowercase;
 
         color: var(--colorSectionTitle);
 
         &::before {
-            content: "| ";
+            content: "[ ";
         }
 
         &::after {
-            content: " |";
+            content: " ]";
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        .section-title-wrapper {
+            transform: none;
         }
     }
 </style>
 
-<span class:list={[cls, "section-title"]} , {...props}>
-    <slot />
-</span>
+<div class:list={cls}>
+    <div class="section-title-wrapper">
+        <span class="section-title" , {...props}>
+            <slot />
+        </span>
+    </div>
+</div>
