@@ -3,9 +3,10 @@ import Menu from "./Menu.astro";
 ---
 
 <style>
-    .navbar {
+    nav {
         position: sticky;
-        top: 0;
+        box-sizing: border-box;
+        top: var(--spacingMd);
 
         display: flex;
         flex-direction: row;
@@ -50,7 +51,7 @@ import Menu from "./Menu.astro";
     }
 </style>
 
-<nav class="navbar">
+<nav>
     <a class="logo" href="/">mito</a>
     <Menu />
 </nav>

@@ -22,7 +22,7 @@
 
     const loader = new OBJLoader();
 
-    let container: HTMLElement | undefined = undefined;
+    let container: HTMLAnchorElement | undefined = undefined;
     let camera: PerspectiveCamera;
     let scene: Scene;
     let particles: Points;
@@ -37,9 +37,10 @@
 
     const color1 = new Color(`rgb(${style.get().getPropertyValue("--red")})`);
     const color2 = new Color(
-        `rgb(${style.get().getPropertyValue("--purple")})`
+        `rgb(${style.get().getPropertyValue("--orange")})`
     );
 
+    let projectIds: string[] = [];
     let shapes: string[] = [];
     let currentGeometryIdx = 0;
     let geometries: BufferGeometry[] = [];
@@ -134,7 +135,10 @@
 
     async function loadModels() {
         const projects = await getCollection("projects");
-        shapes = projects.map((project) => project.data.heroMesh);
+        projectIds = projects.map((project) => project.id);
+        shapes = projects
+            .map((project) => project.data.heroMesh)
+            .filter((project): project is string => !!project);
 
         geometries = await Promise.all(
             shapes.map(async (path) => {
@@ -150,6 +154,10 @@
 
         currentGeometryIdx =
             currentGeometryIdx === shapes.length - 1 ? 0 : ++currentGeometryIdx;
+
+        // change href
+        const id = projectIds[currentGeometryIdx];
+        container!.href = `/projects/${id}`;
 
         setTimeout(iterate, 3000);
     }
@@ -190,12 +198,15 @@
         mouseX = event.clientX - window.innerWidth / 2;
         mouseY = event.clientY - window.innerHeight / 2;
     }
+
+    function handleMouseClick(event: MouseEvent) {}
 </script>
 
-<section
+<a
     class="sprites"
     bind:this={container}
     on:pointermove={handleMouseMove}
+    href="/"
 />
 
 <style>

@@ -1,0 +1,28 @@
+---
+import { Image as AstroImage } from "astro:assets";
+
+import { type LocalImageProps, type RemoteImageProps } from "astro:assets";
+
+type Props = RemoteImageProps | LocalImageProps;
+
+const { src, width, height, ...props } = Astro.props;
+---
+
+<style>
+    img {
+        height: auto;
+        width: auto;
+
+        max-height: 100%;
+        max-width: 100%;
+
+        border-radius: var(--radiusMd);
+
+        object-fit: contain;
+    }
+</style>
+
+<div>
+    <!-- @ts-ignore -->
+    <AstroImage alt="" src={src} width={width} height={height} {...props} />
+</div>

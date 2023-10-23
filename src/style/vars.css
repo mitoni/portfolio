@@ -15,12 +15,13 @@
 
     --white: 255, 255, 255;
     --warmWhite: 249, 247, 242;
-    --lightGray: 235, 235, 235;
     --almostBlack: 20, 20, 20;
-    --gray: 156, 156, 156;
+    --gray: 110, 110, 110;
+    --lightGray: 180, 180, 180;
     --darkGray: 56, 57, 63;
 
-    --red: 219, 34, 42;
+    --red: 255, 128, 128;
+    --orange: 255, 207, 150;
     --purple: 5, 60, 94;
 
     --spacingXs: 0.25em;
@@ -36,7 +37,8 @@
     --transitionDuration: 0.25s;
     --transitionTimingFunction: cubic-bezier(0.65, 0, 0.35, 1);
 
-    --sizeNavbarY: 35px;
+    --sizeNavbarY: 65px;
+    --stickyTopOffset: calc(var(--sizeNavbarY) + var(--spacingMd) * 2);
 
     --opacityLight: 0.25;
 
@@ -69,7 +71,7 @@
         --colorBg: rgb(var(--almostBlack))  ;
 
         --colorText: rgb(var(--warmWhite));
-        --colorTextSecondary: rgb(var(--gray));
+        --colorTextSecondary: rgb(var(--lightGray));
 
         --colorLine: rgb(var(--warmWhite));
 

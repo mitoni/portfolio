@@ -16,7 +16,17 @@ const { title } = Astro.props;
     }
 
     .col1 {
-        grid-column: 1 / 5;
+        grid-column: 1 / 6;
+
+        display: flex;
+        flex-direction: column;
+
+        justify-content: start;
+        align-items: start;
+
+        flex-wrap: wrap;
+
+        gap: var(--spacingMd);
     }
 
     .col2 {
@@ -24,12 +34,12 @@ const { title } = Astro.props;
     }
 
     .cols-right-stick {
-        top: var(--sizeNavbarY);
+        top: var(--stickyTopOffset);
         position: sticky;
     }
 
     .cols-right-title {
-        grid-column: 5 / 6;
+        text-align: right;
     }
 
     @media only screen and (max-width: 600px) {
@@ -58,18 +68,19 @@ const { title } = Astro.props;
 </style>
 
 <Row>
-    {
-        title ? (
-            <SectionTitle class="cols-right-title">{title}</SectionTitle>
-        ) : null
-    }
-
     <section class="cols-right col1">
         <slot name="col1" />
     </section>
 
     <section class="cols-right col2">
         <div class="cols-right-stick">
+            {
+                title ? (
+                    <SectionTitle rotate={false} class="cols-right-title">
+                        {title}
+                    </SectionTitle>
+                ) : null
+            }
             <slot name="col2" />
         </div>
     </section>

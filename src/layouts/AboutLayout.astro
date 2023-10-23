@@ -1,0 +1,20 @@
+---
+import MainLayout from "./MainLayout.astro";
+import "../style/about.css";
+---
+
+<style>
+    section {
+        padding-left: var(--spacingMd);
+        padding-right: var(--spacingMd);
+
+        padding-top: var(--spacingLg);
+        padding-bottom: var(--spacingLg);
+    }
+</style>
+
+<MainLayout>
+    <section>
+        <slot />
+    </section>
+</MainLayout>

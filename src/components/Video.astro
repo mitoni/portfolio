@@ -1,0 +1,17 @@
+---
+import { type HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"video"> {}
+
+const props = Astro.props;
+---
+
+<style>
+    video {
+        width: 100%;
+        height: auto;
+        border-radius: var(--radiusMd);
+    }
+</style>
+
+<video {...props}></video>

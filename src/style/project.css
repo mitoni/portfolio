@@ -8,6 +8,8 @@ h3 {
 
 p {
     font-family: var(--fontSerif);
+    font-weight: var(--fontWeightSm);
+    line-height: 150%;
 
     color: var(--colorTextSecondary);
 }

@@ -1,0 +1,8 @@
+{
+    "title": "Hi-Fiber",
+    "category": "product",
+    "subtitle": "The new generation of dental reinforcements",
+    "cover": "/assets/projects/mambo/mambo-cover.jpg",
+    "heroMesh": "/meshes/hi-fiber.obj",
+    "projectMesh": "/meshes/hi-fiber.obj"
+}

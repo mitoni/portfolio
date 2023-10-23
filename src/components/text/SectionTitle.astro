@@ -1,11 +1,18 @@
 ---
-const { class: cls, ...props } = Astro.props;
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+    rotate?: boolean;
+}
+
+const { class: cls, rotate = true, ...props } = Astro.props;
+const angle = rotate ? "90deg" : "0deg";
 ---
 
-<style>
+<style define:vars={{ angle }}>
     .section-title-wrapper {
         transform-origin: bottom left;
-        transform: rotate(90deg);
+        transform: rotate(var(--angle));
     }
 
     .section-title {

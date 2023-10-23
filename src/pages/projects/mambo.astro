@@ -1,14 +1,25 @@
 ---
 import ProjectHero from "../../components/ProjectHero.astro";
 import Centered from "../../components/rows/Centered.astro";
-import ColsLeft from "../../components/rows/ColsLeft.astro";
 import { Image } from "astro:assets";
+import CustomImage from "../../components/CustomImage.astro";
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
-import CenteredText from "../../components/rows/CenteredText.astro";
 import { getEntry } from "astro:content";
+import Video from "../../components/Video.astro";
+import ColsLeft from "../../components/rows/ColsLeft.astro";
+import ColsRight from "../../components/rows/ColsRight.astro";
+import Flex from "../../components/rows/Flex.astro";
 
 const project = await getEntry("projects", "mambo");
 ---
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        .logo {
+            filter: invert();
+        }
+    }
+</style>
 
 <ProjectLayout>
     <ProjectHero
@@ -22,6 +33,7 @@ const project = await getEntry("projects", "mambo");
         <p slot="pre">Published on:</p>
 
         <Image
+            class="logo"
             src="/assets/projects/mambo/forbes-logo.png"
             alt="Forbes logo"
             width={100}
@@ -29,6 +41,7 @@ const project = await getEntry("projects", "mambo");
         />
 
         <Image
+            class="logo"
             src="/assets/projects/mambo/boat-logo.png"
             alt="Forbes logo"
             width={100}
@@ -36,6 +49,7 @@ const project = await getEntry("projects", "mambo");
         />
 
         <Image
+            class="logo"
             src="/assets/projects/mambo/robb-report-logo.png"
             alt="Forbes logo"
             width={100}
@@ -43,21 +57,137 @@ const project = await getEntry("projects", "mambo");
         />
     </Centered>
 
-    <ColsLeft>
+    <ColsLeft title="The idea">
         <div slot="col1">
-            <h3>Oh yeah</h3>
-            <p>Hello</p>
+            <h3>Dreaming big</h3>
+            <p>
+                MAMBO stands as a testament to innovation. It's the world's
+                first 3D printed fiberglass boat, a brainchild of moi
+                composites, a company I'm proud to have co-founded. Our aim with
+                MAMBO was to vividly demonstrate the potential of our 3D
+                printing technology.
+            </p>
+
+            <p>
+                The genesis of this project traces back to a 2018 conversation
+                with Autodesk, our long time partner. Their belief in our vision
+                led them to sponsor part of our journey. Together, we aspired to
+                create something monumental, highlighting Fusion 360's design
+                prowess coupled with CFM technology. This synergy allowed us to
+                craft not just intricate designs but also robust structures,
+                blending the magic of 3D printing with advanced composites.
+            </p>
         </div>
+
+        <Video
+            slot="col2"
+            controls
+            src="/assets/projects/mambo/mambo-video.mp4"
+        />
+
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/mambo/robot-printing.jpg"
+            alt="Robot printing MAMBO"
+            width={1920}
+            height={1080}
+        />
+
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/mambo/mambo-fiberglass-printing.jpg"
+            alt="Fiberglass 3D printing"
+            width={1920}
+            height={1080}
+        />
+
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/mambo/mambo-dolphin-tips.jpg"
+            alt="Dolphin tips detail"
+            width={1440}
+            height={1080}
+        />
+    </ColsLeft>
+
+    <ColsRight title="The success">
+        <CustomImage
+            slot="col1"
+            src="/assets/projects/mambo/mambo-otranto.jpg"
+            alt="MAMBO in Otranto"
+            width={1920}
+            height={1209}
+        />
+
+        <Flex slot="col1">
+            <CustomImage
+                src="/assets/projects/mambo/mambo-top-view.jpg"
+                alt="MAMBO top view"
+                width={1920}
+                height={1209}
+            />
+
+            <CustomImage
+                src="/assets/projects/mambo/mambo-cork-detail.jpg"
+                alt="MAMBO top view"
+                width={1920}
+                height={1209}
+            />
+        </Flex>
 
         <div slot="col2">
-            <video
-                autoplay
-                controls
-                src="/assets/projects/mambo/mambo-video.mp4"
-            >
-            </video>
+            <h3>A dream on water</h3>
+
+            <p>
+                By the time summer 2020 came to a close, our project had
+                beautifully taken shape. Following its completion, MAMBO earned
+                recognition in top-tier magazines across the globe. This nod of
+                approval was a heartening moment for our team.
+            </p>
+
+            <p>
+                Beyond the press, various shipyards expressed their interest,
+                keen on infusing our technology into their craftsmanship. As for
+                MAMBO itself, it's not just a sight to behold but a thrill to
+                navigate, effortlessly cruising at speeds close to 25 knots.
+            </p>
+        </div>
+    </ColsRight>
+
+    <ColsLeft title="the unveiling">
+        <div slot="col1">
+            <h3>MAMBO's Celebrated Debut</h3>
+            <p>
+                In fall 2020, MAMBO made its first appearance on the global
+                stage at the Genova Boat Show, an esteemed gathering in the same
+                league as Cannes, Monaco, and Fort Lauderdale. The event was
+                enriched when Carla De Maria, a distinguished figure in the
+                yachting world, inaugurated our creation.
+            </p>
+
+            <p>
+                The culmination of our efforts was recognized when MAMBO was
+                honored with the Design Innovation Award from UCINA, Italy's
+                premier boat association. This acknowledgment not only
+                celebrated our craftsmanship but also marked a significant
+                milestone in our journey.
+            </p>
         </div>
 
-        <CenteredText>Oh wow</CenteredText>
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/mambo/mambo-design-innovation-award.jpg"
+            alt="MAMBO UCINA Design Innovation Award 2020"
+            width={1920}
+            height={1440}
+        />
+
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/mambo/mambo-inauguration.jpg"
+            alt="Inauguration at SN2020"
+            width={1920}
+            height={1440}
+        />
     </ColsLeft>
 </ProjectLayout>
