@@ -4,15 +4,13 @@
         BufferAttribute,
         BufferGeometry,
         PerspectiveCamera,
-        Points,
-        PointsMaterial,
         Scene,
         WebGLRenderer,
         type TypedArray,
-        TextureLoader,
         Mesh,
-        FogExp2,
         Color,
+        DoubleSide,
+        MeshStandardMaterial,
     } from "three";
 
     import TWEEN from "@tweenjs/tween.js";
@@ -25,7 +23,7 @@
     let container: HTMLAnchorElement | undefined = undefined;
     let camera: PerspectiveCamera;
     let scene: Scene;
-    let particles: Points;
+    let particles: Mesh;
     let renderer: WebGLRenderer;
 
     let mouseX: number = 0;
@@ -47,31 +45,16 @@
 
     onMount(init);
 
-    function init() {
+    async function init() {
         const { width, height } = container!.getBoundingClientRect();
 
         camera = new PerspectiveCamera(60, width / height, 1, 2000);
-
         camera.position.setZ(1000);
 
-        const circle = new TextureLoader().load("/textures/circle.png");
-        const material = new PointsMaterial({
-            size: 15,
-            vertexColors: true,
-            sizeAttenuation: true,
-            alphaMap: circle,
-            depthWrite: false,
-            transparent: true,
-            opacity: 0,
-        });
         const geometry = new BufferGeometry();
 
         const posArray = new Float32Array(Array(numOfParticles * 3).fill(0));
-        for (let i = 0; i < numOfParticles; i++) {
-            posArray[i * 3] = 0;
-            posArray[i * 3 + 1] = 0;
-            posArray[i * 3 + 2] = 0;
-        }
+        const normalArray = new Float32Array(Array(numOfParticles * 3).fill(0));
 
         const colorArray = new Float32Array(Array(numOfParticles * 3).fill(0));
         for (let i = 0; i < numOfParticles; i++) {
@@ -88,18 +71,23 @@
         }
 
         const posAttribute = new BufferAttribute(posArray, 3);
+        const normalAttribute = new BufferAttribute(normalArray, 3);
         const colorAttribute = new BufferAttribute(colorArray, 3);
 
         geometry.setAttribute("position", posAttribute);
+        geometry.setAttribute("normal", normalAttribute);
         geometry.setAttribute("color", colorAttribute);
 
-        particles = new Points(geometry, material);
+        const material = new MeshStandardMaterial({
+            side: DoubleSide,
+            wireframe: true,
+            transparent: true,
+            opacity: 0,
+        });
+
+        particles = new Mesh(geometry, material);
 
         scene = new Scene();
-        scene.fog = new FogExp2(
-            `${style.get().getPropertyValue("--colorBg")})`,
-            0.00075
-        );
         scene.add(particles);
 
         renderer = new WebGLRenderer({ antialias: true, alpha: true });
@@ -114,7 +102,7 @@
         setTimeout(() => {
             // tween opacity
             new TWEEN.Tween(material)
-                .to({ opacity: 0.75 }, morphingTime)
+                .to({ opacity: 0.1 }, morphingTime)
                 .easing(TWEEN.Easing.Exponential.InOut)
                 .start();
 
@@ -135,6 +123,7 @@
 
     async function loadModels() {
         const projects = await getCollection("projects");
+
         projectIds = projects.map((project) => project.id);
         shapes = projects
             .map((project) => project.data.heroMesh)
@@ -152,12 +141,12 @@
     function iterate() {
         draw(geometries[currentGeometryIdx]);
 
-        currentGeometryIdx =
-            currentGeometryIdx === shapes.length - 1 ? 0 : ++currentGeometryIdx;
-
         // change href
         const id = projectIds[currentGeometryIdx];
         container!.href = `/projects/${id}`;
+
+        currentGeometryIdx =
+            currentGeometryIdx === shapes.length - 1 ? 0 : ++currentGeometryIdx;
 
         setTimeout(iterate, 3000);
     }
@@ -172,23 +161,24 @@
     }
 
     async function draw(geometry: BufferGeometry) {
-        const posArr = geometry.attributes.position.array;
+        morph(
+            particles.geometry.attributes.position.array,
+            geometry.attributes.position.array
+        );
 
-        let array = [];
-        for (let i = 0; i < posArr.length; i += 9) {
-            array.push(posArr[i], posArr[i + 1], posArr[i + 2]);
-        }
-
-        morph(posArr);
+        morph(
+            particles.geometry.attributes.normal.array,
+            geometry.attributes.normal.array
+        );
     }
 
     function update() {
         particles.geometry.attributes.position.needsUpdate = true;
     }
 
-    function morph(array: TypedArray) {
-        new TWEEN.Tween(particles.geometry.attributes.position.array)
-            .to(array, morphingTime)
+    function morph(from: TypedArray, to: TypedArray) {
+        new TWEEN.Tween(from)
+            .to(to, morphingTime)
             .easing(TWEEN.Easing.Elastic.Out)
             .onUpdate(update)
             .start();

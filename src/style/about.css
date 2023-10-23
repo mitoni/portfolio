@@ -1,8 +1,3 @@
-body {
-    font-family: var(--fontSans);
-    color: var(--colorTextSecondary);
-}
-
 h1,
 h2,
 h3,
@@ -44,4 +39,8 @@ li {
 li:before {
   content: "_ ";
   padding-right: var(--spacingSm);
+}
+
+strong {
+    font-weight: var(--fontWeightLg);
 }

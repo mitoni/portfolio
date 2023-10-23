@@ -92,6 +92,7 @@
         );
 
         const texture = await textureLoader.loadAsync("/textures/gray.png");
+
         const categories = new Set(
             projects.map((project) => project.data.category)
         );
@@ -118,12 +119,13 @@
             side: DoubleSide,
             alphaTest: 0.5,
             transparent: true,
+            color: `rgb(${style.get().getPropertyValue("--darkGray")})`,
             opacity: 0,
         });
 
         geometries.forEach((geometry, i) => {
             const material = baseMaterial.clone();
-            material.color = categoriesColors[geometry.userData.category];
+            // material.color = categoriesColors[geometry.userData.category];
 
             const mesh = new Mesh(geometry, material);
             mesh.visible = false;
