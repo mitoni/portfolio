@@ -9,8 +9,8 @@
         type TypedArray,
         Mesh,
         Color,
-        DoubleSide,
         MeshStandardMaterial,
+        AmbientLight,
     } from "three";
 
     import TWEEN from "@tweenjs/tween.js";
@@ -19,6 +19,7 @@
     import { getCollection } from "astro:content";
 
     const loader = new OBJLoader();
+    // const textureLoader = new TextureLoader();
 
     let container: HTMLAnchorElement | undefined = undefined;
     let camera: PerspectiveCamera;
@@ -29,7 +30,8 @@
     let mouseX: number = 0;
     let mouseY: number = 0;
 
-    const morphingTime = 1250;
+    const morphingTime = 1500;
+    const finalOpacity = 0.1;
 
     const numOfParticles = 15000;
 
@@ -54,7 +56,7 @@
         const geometry = new BufferGeometry();
 
         const posArray = new Float32Array(Array(numOfParticles * 3).fill(0));
-        const normalArray = new Float32Array(Array(numOfParticles * 3).fill(0));
+        // const normalArray = new Float32Array(Array(numOfParticles * 3).fill(0));
 
         const colorArray = new Float32Array(Array(numOfParticles * 3).fill(0));
         for (let i = 0; i < numOfParticles; i++) {
@@ -71,24 +73,38 @@
         }
 
         const posAttribute = new BufferAttribute(posArray, 3);
-        const normalAttribute = new BufferAttribute(normalArray, 3);
-        const colorAttribute = new BufferAttribute(colorArray, 3);
+        // const normalAttribute = new BufferAttribute(normalArray, 3);
+        // const colorAttribute = new BufferAttribute(colorArray, 3);
 
         geometry.setAttribute("position", posAttribute);
-        geometry.setAttribute("normal", normalAttribute);
-        geometry.setAttribute("color", colorAttribute);
+        // geometry.setAttribute("normal", normalAttribute);
+        // geometry.setAttribute("color", colorAttribute);
 
-        const material = new MeshStandardMaterial({
-            side: DoubleSide,
+        const wireMaterial = new MeshStandardMaterial({
+            color: `${style.get().getPropertyValue("--colorHeroWireframe")}`,
             wireframe: true,
             transparent: true,
             opacity: 0,
         });
 
-        particles = new Mesh(geometry, material);
+        // const texture = await textureLoader.loadAsync("/textures/gray.png");
+
+        /* const solidMaterial = new MeshMatcapMaterial({
+            matcap: texture,
+            side: DoubleSide,
+            alphaTest: 0.5,
+            transparent: true,
+            color: `rgb(${style.get().getPropertyValue("--darkGray")})`,
+            opacity: 0,
+        }); */
+
+        particles = new Mesh(geometry, wireMaterial);
 
         scene = new Scene();
         scene.add(particles);
+
+        const light = new AmbientLight(0xffffff);
+        scene.add(light);
 
         renderer = new WebGLRenderer({ antialias: true, alpha: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -101,13 +117,13 @@
 
         setTimeout(() => {
             // tween opacity
-            new TWEEN.Tween(material)
-                .to({ opacity: 0.1 }, morphingTime)
+            new TWEEN.Tween(wireMaterial)
+                .to({ opacity: finalOpacity }, morphingTime)
                 .easing(TWEEN.Easing.Exponential.InOut)
                 .start();
 
             iterate();
-        }, 800);
+        }, 500);
 
         animate();
     }
@@ -165,11 +181,6 @@
             particles.geometry.attributes.position.array,
             geometry.attributes.position.array
         );
-
-        morph(
-            particles.geometry.attributes.normal.array,
-            geometry.attributes.normal.array
-        );
     }
 
     function update() {
@@ -188,8 +199,6 @@
         mouseX = event.clientX - window.innerWidth / 2;
         mouseY = event.clientY - window.innerHeight / 2;
     }
-
-    function handleMouseClick(event: MouseEvent) {}
 </script>
 
 <a

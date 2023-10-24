@@ -6,20 +6,36 @@ import Row from "../rows/Row.astro";
     .centered-text-container {
         grid-column: 3 / 7;
 
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
 
         text-align: center;
+    }
 
+    .centered-text {
         font-size: var(--fontSizeLg);
         font-weight: var(--fontWeightSm);
         font-family: var(--fontSans);
 
         line-height: 150%;
     }
+
+    @media only screen and (max-width: 600px) {
+        .centered-text-container {
+            grid-column: 1 / -1;
+        }
+    }
 </style>
 
 <Row>
     <section class="centered-text-container">
-        <slot />
+        <slot name="pre" />
+
+        <section class="centered-text">
+            <slot />
+        </section>
+
+        <slot name="post" />
     </section>
 </Row>

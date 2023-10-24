@@ -14,12 +14,12 @@ In addition to my professional endeavors, I actively contribute to the academic 
 
 ## Core Competences
 
-- **Technical** Product & Process Development ⏐ Hardware & Software Design ⏐ Robotics ⏐ Digital Manufacturing ⏐ APIs ⏐ Machine Learning
-- **Analytical** Data Analysis & Visualisation ⏐ Reporting & Presentation ⏐ Customer Feedback Analysis
-- **Leadership** Strategic Vision and Planning ⏐ Cross-functional Collaboration ⏐ Strategic Partnership Development
-- **Programming** Rust ⏐ Go | Python ⏐ C# ⏐ Javascript ⏐ SQL
-- **Design** Fusion360 ⏐ Rhino ⏐ Grasshopper ⏐ Ps ⏐ Ai ⏐ Id
-- **Languages** English ⏐ Italian
+- **Technical** Product & Process Development / Hardware & Software Design / Robotics / Digital Manufacturing / APIs / Machine Learning
+- **Analytical** Data Analysis & Visualisation / Reporting & Presentation / Customer Feedback Analysis
+- **Leadership** Strategic Vision and Planning / Cross-functional Collaboration / Strategic Partnership Development
+- **Programming** Rust / Go / Python / C# / Javascript / SQL
+- **Design** Fusion360 / Rhino / Grasshopper / Ps / Ai / Id
+- **Languages** English / Italian
 
 ## Professional experiences
 

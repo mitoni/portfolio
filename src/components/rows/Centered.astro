@@ -38,8 +38,11 @@ const { class: cls, pre: Pre, ...props } = Astro.props;
 <Row>
     <section class="centered-container">
         <slot name="pre" />
+
         <section class:list={["centered", cls]} {...props}>
             <slot />
         </section>
+
+        <slot name="post" />
     </section>
 </Row>

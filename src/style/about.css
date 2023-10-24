@@ -4,7 +4,7 @@ h3,
 h4,
 h5,
 h6{
-    font-family: var(--fontSans);
+    font-family: var(--fontSerif);
     font-weight: var(--fontWeightLg);
 
     color: var(--colorText);
@@ -34,6 +34,8 @@ ul {
 li {
   padding-left: 1em;
   text-indent: -1em;
+
+  font-weight: var(--fontWeightSm);
 }
 
 li:before {
@@ -42,5 +44,5 @@ li:before {
 }
 
 strong {
-    font-weight: var(--fontWeightLg);
+    font-weight: var(--fontWeightMd);
 }

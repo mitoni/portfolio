@@ -50,6 +50,7 @@
     --colorTextSecondary: rgb(var(--gray));
 
     --colorLine: rgb(var(--almostBlack));
+    --colorHeroWireframe: rgb(var(--almostBlack));
 
     --colorSelection: rgb(var(--almostBlack));
     --colorSelectionBg: rgb(var(--white));
@@ -74,6 +75,7 @@
         --colorTextSecondary: rgb(var(--lightGray));
 
         --colorLine: rgb(var(--warmWhite));
+        --colorHeroWireframe: rgb(var(--warmWhite));
 
         --colorSelection: rgb(var(--warmWhite));
         --colorSelectionBg: rgb(var(--darkGray));

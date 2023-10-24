@@ -9,6 +9,7 @@ import Video from "../../components/Video.astro";
 import ColsLeft from "../../components/rows/ColsLeft.astro";
 import ColsRight from "../../components/rows/ColsRight.astro";
 import Flex from "../../components/rows/Flex.astro";
+import CenteredText from "../../components/rows/CenteredText.astro";
 
 const project = await getEntry("projects", "mambo");
 ---
@@ -52,6 +53,14 @@ const project = await getEntry("projects", "mambo");
             class="logo"
             src="/assets/projects/mambo/robb-report-logo.png"
             alt="Forbes logo"
+            width={100}
+            height={100}
+        />
+
+        <Image
+            class="logo"
+            src="/assets/projects/mambo/bi-logo.png"
+            alt="Business Insider logo"
             width={100}
             height={100}
         />
@@ -109,6 +118,12 @@ const project = await getEntry("projects", "mambo");
             height={1080}
         />
     </ColsLeft>
+
+    <CenteredText>
+        the striking boat has an organic, flowing design and an "inverted
+        tricycle" shape that looks like nothing else on the water.
+        <p slot="post">Tim Levin - Business Insider</p>
+    </CenteredText>
 
     <ColsRight title="The success">
         <CustomImage

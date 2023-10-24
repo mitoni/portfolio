@@ -8,7 +8,6 @@ import SectionTitle from "./text/SectionTitle.astro";
 import ProjectDisplay from "./WebGL/ProjectDisplay.svelte";
 
 const projects = await getCollection("projects");
-console.log({ projects });
 
 const rows = Math.max(Math.ceil(projects.length / 2), 8);
 ---
@@ -17,10 +16,6 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
     .projects {
         padding-left: var(--spacingMd);
         padding-right: var(--spacingMd);
-    }
-
-    .projects-section-title {
-        grid-column: 2 / -1;
     }
 
     .projects-project-list {
@@ -105,6 +100,16 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
     .projects-project-visible-container {
         display: flex;
         flex-direction: column;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .projects-display {
+            grid-column: -1 / -1;
+        }
+
+        .projects-project-list {
+            grid-column: -1 / -1;
+        }
     }
 </style>
 
