@@ -1,7 +1,7 @@
 h3 {
     font-family: var(--fontMono);
     font-size: var(--fontSizeLg);
-    font-weight: var(--fontWeightMd);
+    font-weight: var(--fontWeightLg);
 
     text-transform: uppercase;
 }
@@ -9,7 +9,7 @@ h3 {
 p {
     font-family: var(--fontSerif);
     font-weight: var(--fontWeightSm);
-    line-height: 150%;
+    line-height: 125%;
 
     color: var(--colorTextSecondary);
 }

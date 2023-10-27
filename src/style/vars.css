@@ -14,6 +14,8 @@
     --fontWeightLg: 600;
 
     --white: 255, 255, 255;
+    --black: 0, 0, 0;
+    
     --warmWhite: 249, 247, 242;
     --almostBlack: 20, 20, 20;
     --gray: 110, 110, 110;
@@ -45,6 +47,7 @@
     --colorWhite: rgb(var(--white));
 
     --colorBg: rgb(var(--warmWhite));
+    --colorBgSecondary: rgb(var(--almostBlack));
 
     --colorText: rgb(var(--almostBlack));
     --colorTextSecondary: rgb(var(--gray));
@@ -63,6 +66,8 @@
     --colorNavbarBg: rgba(var(--warmWhite), 0.55);
 
     --colorProjectsCategory: rgb(var(--gray));
+
+    --colorLinkBg: rgb(var(--white));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -70,6 +75,7 @@
         --colorWhite: rgb(var(--darkGray));
 
         --colorBg: rgb(var(--almostBlack))  ;
+        --colorBgSecondary: rgb(var(--warmWhite));
 
         --colorText: rgb(var(--warmWhite));
         --colorTextSecondary: rgb(var(--lightGray));
@@ -84,6 +90,8 @@
         --colorHighlightText: rgb(var(--almostBlack));
 
         --colorNavbarBg: rgba(var(--almostBlack), 0.55);
+
+        --colorLinkBg:  rgb(var(--white));
     }
 }
 
