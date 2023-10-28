@@ -117,7 +117,8 @@
         projectIds = projects.map((project) => project.id);
         shapes = projects
             .map((project) => project.data.heroMesh)
-            .filter((project): project is string => !!project);
+            .filter((project): project is string => !!project)
+            .sort(() => Math.random() - 0.5);
 
         geometries = await Promise.all(
             shapes.map(async (path) => {

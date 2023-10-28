@@ -64,6 +64,6 @@ p > a {
 }
 
 strong {
-    font-weight: var(--fontWeightLg);
+    font-weight: var(--fontWeightMd);
     color: var(--colorText);
 }
