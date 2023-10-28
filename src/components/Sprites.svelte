@@ -8,7 +8,6 @@
         WebGLRenderer,
         type TypedArray,
         Mesh,
-        Color,
         MeshStandardMaterial,
         AmbientLight,
     } from "three";
@@ -35,11 +34,6 @@
 
     const numOfParticles = 15000;
 
-    const color1 = new Color(`rgb(${style.get().getPropertyValue("--red")})`);
-    const color2 = new Color(
-        `rgb(${style.get().getPropertyValue("--orange")})`
-    );
-
     let projectIds: string[] = [];
     let shapes: string[] = [];
     let currentGeometryIdx = 0;
@@ -56,29 +50,9 @@
         const geometry = new BufferGeometry();
 
         const posArray = new Float32Array(Array(numOfParticles * 3).fill(0));
-        // const normalArray = new Float32Array(Array(numOfParticles * 3).fill(0));
-
-        const colorArray = new Float32Array(Array(numOfParticles * 3).fill(0));
-        for (let i = 0; i < numOfParticles; i++) {
-            const color = new Color().lerpColors(
-                color1,
-                color2,
-                i / numOfParticles
-            );
-            const { r, g, b } = color;
-
-            colorArray[i * 3] = r;
-            colorArray[i * 3 + 1] = g;
-            colorArray[i * 3 + 2] = b;
-        }
-
         const posAttribute = new BufferAttribute(posArray, 3);
-        // const normalAttribute = new BufferAttribute(normalArray, 3);
-        // const colorAttribute = new BufferAttribute(colorArray, 3);
 
         geometry.setAttribute("position", posAttribute);
-        // geometry.setAttribute("normal", normalAttribute);
-        // geometry.setAttribute("color", colorAttribute);
 
         const wireMaterial = new MeshStandardMaterial({
             color: `${style.get().getPropertyValue("--colorHeroWireframe")}`,

@@ -1,0 +1,150 @@
+---
+import { getEntry } from "astro:content";
+
+import ProjectHero from "../../components/ProjectHero.astro";
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import ColsLeft from "../../components/rows/ColsLeft.astro";
+import CustomImage from "../../components/CustomImage.astro";
+import ColsRight from "../../components/rows/ColsRight.astro";
+import Flex from "../../components/rows/Flex.astro";
+
+const project = await getEntry("projects", "necklace-residence");
+---
+
+<ProjectLayout>
+    <ProjectHero
+        title={project.data.title}
+        subtitle={project.data.subtitle}
+        category={project.data.category}
+        cover={project.data.cover}
+    />
+
+    <ColsLeft title="the design">
+        <div slot="col1">
+            <h3>A jewel box for individual lifestyles</h3>
+
+            <p>
+                Before I joined the REX office, the team had won a contest to
+                design a private residence in Long Island. This residence
+                consisted of several houses arranged around a courtyard, facing
+                one another.
+            </p>
+
+            <p>
+                Each house was linked by a central corridor. Within certain
+                houses, there were shared spaces where families could gather.
+                These spaces also acted as entrances to the main corridor.
+            </p>
+
+            <p>
+                I was responsible for designing these shared spaces and the
+                unique <strong>functional sculptures</strong> within them. Made
+                of wood, these curved sculptures added character to the area,
+                breaking the monotony of the square designs, and making the
+                overall experience more engaging.
+            </p>
+        </div>
+
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/necklace-residence/necklace-residence-courtyard.jpg"
+            alt="Necklace Residence inside courtyard view"
+            width={1920}
+            height={1200}
+        />
+
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/necklace-residence/necklace-residence-plan.jpg"
+            alt="Necklace residence plan"
+            width={1920}
+            height={1200}
+        />
+    </ColsLeft>
+
+    <ColsRight title="Section title">
+        <div slot="col2">
+            <h3>Title</h3>
+            <p>Paragraph</p>
+        </div>
+
+        <CustomImage
+            slot="col1"
+            src="/assets/projects/necklace-residence/necklace-residence-courtyard-stairs.jpg"
+            alt="Necklace residence plan"
+            width={1920}
+            height={1200}
+        />
+
+        <CustomImage
+            slot="col1"
+            src="/assets/projects/necklace-residence/necklace-residence-stair-zoom.jpg"
+            alt="Necklace residence plan"
+            width={1920}
+            height={1200}
+        />
+
+        <CustomImage
+            slot="col1"
+            src="/assets/projects/necklace-residence/necklace-residence-bar.jpg"
+            alt="Necklace residence plan"
+            width={1920}
+            height={1200}
+        />
+
+        <Flex slot="col1">
+            <CustomImage
+                src="/assets/projects/necklace-residence/necklace-residence-main-stair-section.jpg"
+                alt="MAMBO top view"
+                width={1920}
+                height={1200}
+            />
+
+            <CustomImage
+                src="/assets/projects/necklace-residence/necklace-residence-bar-stair-section.jpg"
+                alt="MAMBO top view"
+                width={1920}
+                height={1200}
+            />
+        </Flex>
+    </ColsRight>
+
+    <ColsLeft>
+        <div slot="col1">
+            <h3>Title</h3>
+            <p>Paragraph</p>
+        </div>
+
+        <Flex slot="col2">
+            <CustomImage
+                src="/assets/projects/necklace-residence/necklace-residence-stair-script.jpg"
+                alt="MAMBO top view"
+                width={1920}
+                height={1200}
+            />
+
+            <CustomImage
+                src="/assets/projects/necklace-residence/necklace-residence-3d-print-main-stair.jpg"
+                alt="MAMBO top view"
+                width={1920}
+                height={1200}
+            />
+        </Flex>
+
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/necklace-residence/necklace-residence-3d-print-main-stair-2.jpg"
+            alt="MAMBO top view"
+            width={1920}
+            height={1200}
+        />
+
+        <CustomImage
+            slot="col2"
+            src="/assets/projects/necklace-residence/necklace-residence-3d-print-kids-space.jpg"
+            alt="MAMBO top view"
+            width={1920}
+            height={1200}
+        />
+    </ColsLeft>
+</ProjectLayout>

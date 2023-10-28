@@ -36,6 +36,8 @@ const props = Astro.props;
         font-weight: var(--fontWeightSm);
         font-size: var(--fontSizeLg);
         color: var(--colorTextSecondary);
+
+        display: inline-flex;
     }
 
     .project-hero-row {
@@ -89,6 +91,25 @@ const props = Astro.props;
         z-index: 1;
     }
 
+    #bar {
+        transform: rotate(-30deg);
+
+        animation: spin 1s ease-in-out 0.5s forwards;
+        webkit-animation: spin 1s ease-in-out 0.5s forwards;
+    }
+
+    @-webkit-keyframes spin {
+        100% {
+            transform: rotate(0deg);
+        }
+    }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(0deg);
+        }
+    }
+
     @media only screen and (max-width: 600px) {
         .project-subtitle-container {
             grid-column: 1 / -1;
@@ -118,7 +139,9 @@ const props = Astro.props;
 
     <section class="project-subtitle-container">
         <h2 class="subtitle">
-            > {props.subtitle}
+            <div id="bar">/</div>
+             &nbsp;
+            {props.subtitle}
         </h2>
     </section>
 

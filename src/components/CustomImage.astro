@@ -3,9 +3,11 @@ import { Image as AstroImage } from "astro:assets";
 
 import { type LocalImageProps, type RemoteImageProps } from "astro:assets";
 
-type Props = RemoteImageProps | LocalImageProps;
+type Props = (RemoteImageProps | LocalImageProps) & {
+    caption?: string;
+};
 
-const { src, width, height, ...props } = Astro.props;
+const { src, width, height, caption, ...props } = Astro.props;
 ---
 
 <style>
@@ -22,9 +24,15 @@ const { src, width, height, ...props } = Astro.props;
 
         filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.05));
     }
+
+    .caption {
+        font-size: var(--fontSizeSm);
+        color: var(--colorTextSecondary);
+    }
 </style>
 
 <div>
     <!-- @ts-ignore -->
     <AstroImage alt="" src={src} width={width} height={height} {...props} />
+    {caption ? <span class="caption">{caption}</span> : null}
 </div>

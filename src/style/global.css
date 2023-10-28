@@ -62,3 +62,8 @@ p > a {
         }
     }
 }
+
+strong {
+    font-weight: var(--fontWeightLg);
+    color: var(--colorText);
+}
