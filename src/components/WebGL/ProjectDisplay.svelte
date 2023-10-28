@@ -175,7 +175,10 @@
     });
 </script>
 
-<section class="project-display-container" bind:this={container} />
+<section
+    class={`project-display-container ${$$props.class}`}
+    bind:this={container}
+/>
 
 <style>
     .project-display-container {

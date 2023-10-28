@@ -45,7 +45,9 @@
         const { width, height } = container!.getBoundingClientRect();
 
         camera = new PerspectiveCamera(60, width / height, 1, 2000);
-        camera.position.setZ(1000);
+
+        const dist = window.innerWidth < 600 ? 1500 : 1000;
+        camera.position.setZ(dist);
 
         const geometry = new BufferGeometry();
 
@@ -143,10 +145,14 @@
     }
 
     function render() {
-        camera.position.x += (mouseX - camera.position.x) * 0.05;
-        camera.position.y += (-mouseY - camera.position.y) * 0.05;
+        if (window.innerWidth < 600) {
+            scene.rotateY(Math.PI / 1e3);
+        } else {
+            camera.position.x += (mouseX - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY - camera.position.y) * 0.05;
 
-        camera.lookAt(scene.position);
+            camera.lookAt(scene.position);
+        }
 
         renderer.render(scene, camera);
     }
@@ -179,7 +185,7 @@
 <a
     class="sprites"
     bind:this={container}
-    on:pointermove={handleMouseMove}
+    on:mousemove={handleMouseMove}
     href="/"
 />
 

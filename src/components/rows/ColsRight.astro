@@ -11,8 +11,7 @@ const { title } = Astro.props;
 
 <style>
     .cols-right {
-        padding-left: var(--spacingMd);
-        padding-right: var(--spacingMd);
+        gap: var(--spacingLg);
     }
 
     .col1 {
@@ -41,17 +40,13 @@ const { title } = Astro.props;
     }
 
     @media only screen and (max-width: 600px) {
-        .cols-right {
-            padding-top: var(--spacingMd);
-            padding-bottom: var(--spacingMd);
-        }
-
         .col1 {
-            position: sticky;
             grid-column: 1 / -1;
+            gap: var(--spacingMd);
         }
 
         .col2 {
+            position: sticky;
             grid-column: 1 / -1;
         }
 
@@ -65,7 +60,7 @@ const { title } = Astro.props;
     }
 </style>
 
-<Row>
+<Row class="cols-right">
     <section class="cols-right col1">
         <slot name="col1" />
     </section>

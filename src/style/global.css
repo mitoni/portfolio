@@ -29,6 +29,14 @@ a, button {
     cursor: pointer;
 }
 
+p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+
+    padding-block-start: 1em;
+    padding-block-end: 1em;
+}
+
 p > a {
     position: relative;
 

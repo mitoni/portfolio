@@ -28,6 +28,12 @@ direction = direction === "horizontal" ? "row" : "column";
 
         gap: var(--spacingLg);
     }
+
+    @media only screen and (max-width: 600px) {
+        div {
+            gap: var(--spacingMd);
+        }
+
 </style>
 
 <div {...props}>

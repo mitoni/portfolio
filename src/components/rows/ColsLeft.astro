@@ -11,8 +11,7 @@ const { title } = Astro.props;
 
 <style>
     .cols-left {
-        padding-left: var(--spacingMd);
-        padding-right: var(--spacingMd);
+        gap: var(--spacingLg);
     }
 
     .col1 {
@@ -41,11 +40,6 @@ const { title } = Astro.props;
     }
 
     @media only screen and (max-width: 600px) {
-        .cols-left {
-            padding-top: var(--spacingMd);
-            padding-bottom: var(--spacingMd);
-        }
-
         .col1 {
             position: sticky;
             grid-column: 1 / -1;
@@ -53,6 +47,7 @@ const { title } = Astro.props;
 
         .col2 {
             grid-column: 1 / -1;
+            gap: var(--spacingMd);
         }
 
         .cols-left-title {
@@ -65,8 +60,8 @@ const { title } = Astro.props;
     }
 </style>
 
-<Row>
-    <section class="cols-left col1">
+<Row class="cols-left">
+    <section class="col1">
         <div class="cols-left-stick">
             {
                 title ? (

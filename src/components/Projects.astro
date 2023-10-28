@@ -23,6 +23,7 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
         grid-row: 1 / -1;
 
         display: grid;
+
         grid-template-columns: repeat(2, minmax(0, 1fr));
         grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
     }
@@ -103,12 +104,31 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
     }
 
     @media only screen and (max-width: 600px) {
+        .projects {
+            display: flex;
+
+            flex-direction: column;
+        }
+
         .projects-display {
-            grid-column: -1 / -1;
+            position: relative;
+
+            top: 0;
         }
 
         .projects-project-list {
-            grid-column: -1 / -1;
+        }
+
+        .projects-display-canvas {
+            display: none;
+        }
+
+        .projects-project-container {
+            padding: 0;
+        }
+
+        projects-project-subtitle {
+            display: none;
         }
     }
 </style>
@@ -117,7 +137,6 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
     import { selectedProject } from "./stores/selectedProject";
 
     attachListeners();
-    document.addEventListener("astro:after-swap", attachListeners);
 
     function attachListeners() {
         const projectsEl = document.querySelectorAll(
@@ -147,7 +166,7 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
             things I helped make
         </SectionTitle>
 
-        <ProjectDisplay client:only />
+        <ProjectDisplay class="projects-display-canvas" client:only />
     </section>
 
     <section class="projects-project-list">

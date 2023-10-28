@@ -27,8 +27,14 @@ const { class: cls, pre: Pre, ...props } = Astro.props;
     }
 
     @media only screen and (max-width: 600px) {
+        .centered-container {
+            grid-column: 1 / -1;
+        }
+
         .centered {
             grid-column: 1 / -1;
+
+            flex-wrap: wrap;
 
             text-align: left;
         }
