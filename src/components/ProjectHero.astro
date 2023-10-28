@@ -111,18 +111,31 @@ const props = Astro.props;
     }
 
     @media only screen and (max-width: 600px) {
+        .project-header-bg {
+            display: none;
+        }
+
+        .project-title-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
         .project-subtitle-container {
+            padding-left: 0;
+            padding-right: 0;
+
             grid-column: 1 / -1;
         }
 
         .project-category-container {
-            padding-left: var(--spacingMd);
-            padding-right: var(--spacingMd);
+            padding-left: 0;
+            padding-right: 0;
 
             grid-column: 1 / -1;
         }
 
         .project-hero-row {
+            padding-top: var(--spacingLg);
             min-height: auto;
         }
     }
