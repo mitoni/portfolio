@@ -125,10 +125,13 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
 
         .projects-project-container {
             padding: 0;
+
+            flex-direction: column-reverse;
+            justify-content: start;
         }
 
-        projects-project-subtitle {
-            display: none;
+        .projects-project-subtitle {
+            opacity: 1;
         }
     }
 </style>

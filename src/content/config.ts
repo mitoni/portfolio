@@ -4,7 +4,7 @@ const projects = defineCollection({
     type: 'data',
     schema: z.object({
         title: z.string(),
-        category: z.enum(["product", "software", "architecture", "experiment"]),
+        category: z.enum(["product", "software", "architecture", "experiment", "creative & web"]),
         subtitle: z.string(),
         cover: z.string(),
         heroMesh: z.optional(z.string()),
