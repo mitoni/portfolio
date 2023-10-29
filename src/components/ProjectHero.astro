@@ -37,7 +37,6 @@ const props = Astro.props;
         font-size: var(--fontSizeLg);
         color: var(--colorTextSecondary);
 
-        display: inline-flex;
     }
 
     .project-hero-row {
@@ -92,7 +91,12 @@ const props = Astro.props;
     }
 
     #bar {
+        display: inline-block;
+
         transform: rotate(-30deg);
+        transform-origin: center center;
+
+        margin-right: var(--spacingSm);
 
         animation: spin 1s ease-in-out 0.5s forwards;
         webkit-animation: spin 1s ease-in-out 0.5s forwards;
@@ -152,8 +156,7 @@ const props = Astro.props;
 
     <section class="project-subtitle-container">
         <h2 class="subtitle">
-            <div id="bar">/</div>
-             &nbsp;
+            <span id="bar">/</span>
             {props.subtitle}
         </h2>
     </section>
