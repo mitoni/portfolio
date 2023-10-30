@@ -1,7 +1,6 @@
 ---
 import ProjectHero from "../../components/ProjectHero.astro";
 import Centered from "../../components/rows/Centered.astro";
-import { Image } from "astro:assets";
 import CustomImage from "../../components/CustomImage.astro";
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
 import { getEntry } from "astro:content";
@@ -10,17 +9,10 @@ import ColsLeft from "../../components/rows/ColsLeft.astro";
 import ColsRight from "../../components/rows/ColsRight.astro";
 import Flex from "../../components/rows/Flex.astro";
 import CenteredText from "../../components/rows/CenteredText.astro";
+import { Image } from "astro:assets";
 
 const project = await getEntry("projects", "mambo");
 ---
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        .logo {
-            filter: invert();
-        }
-    }
-</style>
 
 <ProjectLayout>
     <ProjectHero
@@ -33,7 +25,7 @@ const project = await getEntry("projects", "mambo");
     <Centered>
         <p slot="pre">Published on:</p>
 
-        <CustomImage
+        <Image
             class="logo"
             src="/assets/projects/mambo/forbes-logo.png"
             alt="Forbes logo"
@@ -41,7 +33,7 @@ const project = await getEntry("projects", "mambo");
             height={100}
         />
 
-        <CustomImage
+        <Image
             class="logo"
             src="/assets/projects/mambo/boat-logo.png"
             alt="Forbes logo"
@@ -49,7 +41,7 @@ const project = await getEntry("projects", "mambo");
             height={100}
         />
 
-        <CustomImage
+        <Image
             class="logo"
             src="/assets/projects/mambo/robb-report-logo.png"
             alt="Forbes logo"
@@ -57,7 +49,7 @@ const project = await getEntry("projects", "mambo");
             height={100}
         />
 
-        <CustomImage
+        <Image
             class="logo"
             src="/assets/projects/mambo/bi-logo.png"
             alt="Business Insider logo"
