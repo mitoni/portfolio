@@ -8,6 +8,7 @@
     "preview": "bunx --bun astro preview"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.0.2",
     "@astrojs/svelte": "^4.0.2",
     "@tweenjs/tween.js": "^21.0.0",
     "astro": "^3.0.12",
