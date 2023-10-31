@@ -1,6 +1,7 @@
 ---
 layout: "../layouts/AboutLayout.astro"
 ---
+<img src="/assets/michele-tonizzo-portrait.jpg" width="300" style="max-width: 100%" />
 
 I am an architect and a devoted maker.
 

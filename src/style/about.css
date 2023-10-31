@@ -19,6 +19,10 @@ h5 {
     font-size: var(--fontSizeSm);
 }
 
+h2 {
+    margin-block-start: var(--spacingLg);
+}
+
 p,
 ul,
 li {
