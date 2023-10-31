@@ -8,7 +8,7 @@ import SectionTitle from "./text/SectionTitle.astro";
 import ProjectDisplay from "./WebGL/ProjectDisplay.svelte";
 
 const projects = (await getCollection("projects")).sort(
-    (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+    (a, b) => a.data.order - b.data.order,
 );
 
 const rows = Math.max(Math.ceil(projects.length / 2), 8);

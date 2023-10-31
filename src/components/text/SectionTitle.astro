@@ -26,10 +26,42 @@ const angle = rotate ? "90deg" : "0deg";
 
         &::before {
             content: "[ ";
+            display: inline-block;
+            animation: shift-left 5s ease-in-out infinite;
         }
 
         &::after {
             content: " ]";
+            display: inline-block;
+            animation: shift-right 5s ease-in-out infinite;
+        }
+    }
+
+    @keyframes shift-left {
+        0% {
+            transform: translateX(0px);
+        }
+
+        50% {
+            transform: translateX(-6px);
+        }
+
+        100% {
+            transform: translateX(0px);
+        }
+    }
+
+    @keyframes shift-right {
+        0% {
+            transform: translateX(0px);
+        }
+
+        50% {
+            transform: translateX(6px);
+        }
+
+        100% {
+            transform: translateX(0px);
         }
     }
 
@@ -40,7 +72,7 @@ const angle = rotate ? "90deg" : "0deg";
     }
 </style>
 
-<div class:list={cls}>
+<div class={cls}>
     <div class="section-title-wrapper">
         <span class="section-title" , {...props}>
             <slot />

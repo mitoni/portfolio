@@ -4,9 +4,7 @@ h3,
 h4,
 h5,
 h6{
-    font-family: var(--fontSerif);
     font-weight: var(--fontWeightLg);
-
     color: var(--colorText);
 }
 
@@ -19,6 +17,12 @@ h5 {
 
     font-family: var(--fontMono);
     font-size: var(--fontSizeSm);
+}
+
+p,
+ul,
+li {
+    color: var(--colorTextSecondary);
 }
 
 p {
