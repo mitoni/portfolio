@@ -114,13 +114,15 @@
     }
 
     async function loadModels() {
-        const projects = await getCollection("projects");
+        const projects = (await getCollection("projects")).sort(
+            () => Math.random() - 0.5
+        );
 
         projectIds = projects.map((project) => project.id);
+
         shapes = projects
             .map((project) => project.data.heroMesh)
-            .filter((project): project is string => !!project)
-            .sort(() => Math.random() - 0.5);
+            .filter((project): project is string => !!project);
 
         geometries = await Promise.all(
             shapes.map(async (path) => {
