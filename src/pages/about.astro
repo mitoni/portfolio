@@ -29,6 +29,63 @@ import AboutLayout from "../layouts/AboutLayout.astro";
         padding-right: 0;
     }
 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-weight: var(--fontWeightLg);
+        color: var(--colorText);
+    }
+
+    h4 {
+        padding-left: 1em;
+    }
+
+    h5 {
+        all: unset;
+
+        font-family: var(--fontMono);
+        font-size: var(--fontSizeSm);
+    }
+
+    h2 {
+        margin-block-start: var(--spacingLg);
+    }
+
+    p,
+    ul,
+    li {
+        color: var(--colorTextSecondary);
+    }
+
+    p {
+        font-weight: var(--fontWeightSm);
+    }
+
+    ul {
+        list-style: none;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    li {
+        padding-left: 1em;
+        text-indent: -1em;
+
+        font-weight: var(--fontWeightSm);
+    }
+
+    li:before {
+        content: "_ ";
+        padding-right: var(--spacingSm);
+    }
+
+    strong {
+        font-weight: var(--fontWeightMd);
+    }
+
     @keyframes crooked {
         0% {
             transform: rotate(0deg);
