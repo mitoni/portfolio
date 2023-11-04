@@ -7,6 +7,8 @@ import CustomImage from "../../components/CustomImage.astro";
 import ColsRight from "../../components/rows/ColsRight.astro";
 import Video from "../../components/Video.astro";
 import Flex from "../../components/rows/Flex.astro";
+import Centered from "../../components/rows/Centered.astro";
+import {Image} from "astro:assets"
 
 const project = await getEntry("projects", "pac");
 ---
@@ -18,6 +20,34 @@ const project = await getEntry("projects", "pac");
         category={project.data.category}
         cover={project.data.cover}
     />
+
+    <Centered>
+        <p slot="pre">Published on:</p>
+
+        <Image
+            class="logo"
+            src={import("../../assets/projects/pac/nyt-logo.png")}
+            alt="New York Times logo"
+            width={100}
+            height={100}
+        />
+
+        <Image
+            class="logo"
+            src={import("../../assets/projects/pac/cbs-logo.png")}
+            alt="Forbes logo"
+            width={100}
+            height={100}
+        />
+
+        <Image
+            class="logo"
+            src={import("../../assets/projects/pac/ad-logo.png")}
+            alt="Forbes logo"
+            width={100}
+            height={100}
+        />
+    </Centered>
 
     <ColsLeft title="the building">
         <div slot="col1">

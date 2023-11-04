@@ -22,6 +22,7 @@
     let container: HTMLAnchorElement | undefined = undefined;
     let camera: PerspectiveCamera;
     let scene: Scene;
+            console.log("checking");
     let particles: Mesh;
     let renderer: WebGLRenderer;
 
