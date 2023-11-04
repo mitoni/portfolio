@@ -163,7 +163,6 @@
 
         // change href
         const id = projectIds[currentGeometryIdx];
-        console.log({ geometries, shapes, projectIds, currentGeometryIdx, id });
 
         if (container) {
             container.href = `/projects/${id}`;
