@@ -33,8 +33,6 @@
 
     const numOfParticles = 15000;
 
-    let projectIds: string[] = [];
-    let shapes: string[] = [];
     let currentGeometryIdx = 0;
     let geometries: BufferGeometry[] = [];
     let geometry: BufferGeometry;
@@ -57,8 +55,6 @@
 
     function cleanup() {
         geometries = [];
-        projectIds = [];
-        shapes = [];
 
         geometry.dispose();
         material.dispose();
@@ -89,17 +85,6 @@
             transparent: true,
             opacity: 0,
         });
-
-        // const texture = await textureLoader.loadAsync("/textures/gray.png");
-
-        /* const solidMaterial = new MeshMatcapMaterial({
-            matcap: texture,
-            side: DoubleSide,
-            alphaTest: 0.5,
-            transparent: true,
-            color: `rgb(${style.get().getPropertyValue("--darkGray")})`,
-            opacity: 0,
-        }); */
 
         particles = new Mesh(geometry, material);
 
@@ -138,19 +123,17 @@
     }
 
     async function loadModels() {
-        const projects = (await getCollection("projects")).filter((project) => !!project.data.heroMesh).sort(
-            () => Math.random() - 0.5
-        );
-
-        for (const project of projects) {
-            projectIds.push(project.id)
-            shapes.push(project.data.heroMesh!)
-        }
+        const projects = (await getCollection("projects"))
+            .filter((project) => !!project.data.heroMesh)
+            .sort(() => Math.random() - 0.5);
 
         // prefer async loading of meshes without waiting for the whole array to load
-        for (const path of shapes) {
-            loader.load(path, (obj) => {
+        // which of course broke everything because now arrays are not synched
+        for (const project of projects) {
+            loader.load(project.data.heroMesh!, (obj) => {
                 const geometry = (obj.children[0] as Mesh).geometry;
+
+                geometry.userData.id = project.id;
                 geometries.push(geometry);
             });
         }
@@ -159,17 +142,23 @@
     function iterate(): void {
         const geometry = geometries[currentGeometryIdx];
 
+        if (!geometry) {
+            // wait a bit and check again if meshes are loaded
+            setTimeout(iterate, 200);
+            return;
+        }
+
         draw(geometry);
 
         // change href
-        const id = projectIds[currentGeometryIdx];
-
         if (container) {
-            container.href = `/projects/${id}`;
+            container.href = `/projects/${geometry.userData.id}`;
         }
 
         currentGeometryIdx =
-            currentGeometryIdx === shapes.length - 1 ? 0 : ++currentGeometryIdx;
+            currentGeometryIdx === geometries.length - 1
+                ? 0
+                : ++currentGeometryIdx;
 
         setTimeout(iterate, 3000);
     }
@@ -187,7 +176,7 @@
         renderer.render(scene, camera);
     }
 
-    async function draw(geometry: BufferGeometry) {
+    function draw(geometry: BufferGeometry) {
         morph(
             particles.geometry.attributes.position.array,
             geometry.attributes.position.array
