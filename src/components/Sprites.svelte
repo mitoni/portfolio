@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import {
         BufferAttribute,
         BufferGeometry,
@@ -22,7 +22,6 @@
     let container: HTMLAnchorElement | undefined = undefined;
     let camera: PerspectiveCamera;
     let scene: Scene;
-            console.log("checking");
     let particles: Mesh;
     let renderer: WebGLRenderer;
 
@@ -38,8 +37,20 @@
     let shapes: string[] = [];
     let currentGeometryIdx = 0;
     let geometries: BufferGeometry[] = [];
+    let geometry: BufferGeometry;
+    let material: MeshStandardMaterial;
+    let light: AmbientLight;
 
     onMount(init);
+    onDestroy(cleanup);
+
+    function cleanup() {
+        geometries = [];
+
+        geometry.dispose();
+        material.dispose();
+        light.dispose();
+    }
 
     async function init() {
         // start loading 3d models right away
@@ -52,14 +63,14 @@
         const dist = window.innerWidth < 600 ? 1500 : 1000;
         camera.position.setZ(dist);
 
-        const geometry = new BufferGeometry();
+        geometry = new BufferGeometry();
 
         const posArray = new Float32Array(Array(numOfParticles * 3).fill(0));
         const posAttribute = new BufferAttribute(posArray, 3);
 
         geometry.setAttribute("position", posAttribute);
 
-        const wireMaterial = new MeshStandardMaterial({
+        material = new MeshStandardMaterial({
             color: `${style.get().getPropertyValue("--colorHeroWireframe")}`,
             wireframe: true,
             transparent: true,
@@ -77,12 +88,12 @@
             opacity: 0,
         }); */
 
-        particles = new Mesh(geometry, wireMaterial);
+        particles = new Mesh(geometry, material);
 
         scene = new Scene();
         scene.add(particles);
 
-        const light = new AmbientLight(0xffffff);
+        light = new AmbientLight(0xffffff);
         scene.add(light);
 
         renderer = new WebGLRenderer({ antialias: true, alpha: true });
@@ -93,7 +104,7 @@
 
         setTimeout(() => {
             // tween opacity
-            new TWEEN.Tween(wireMaterial)
+            new TWEEN.Tween(material)
                 .to({ opacity: finalOpacity }, morphingTime)
                 .easing(TWEEN.Easing.Exponential.InOut)
                 .start();
