@@ -1,9 +1,9 @@
 {
-    "title": "Necklace Residence",
-    "category": "architecture",
-    "subtitle": "Award winning private residence in Long Island",
-    "cover": "/assets/projects/necklace-residence/necklace-residence-cover.jpg",
-    "order": 4,
-    "heroMesh": "/meshes/lh.obj",
-    "projectMesh": "/meshes/lh.obj"
+  "title": "Necklace Residence",
+  "category": "architecture",
+  "subtitle": "Award winning private residence in Long Island",
+  "cover": "../../assets/projects/necklace-residence/necklace-residence-cover.jpg",
+  "order": 4,
+  "heroMesh": "/meshes/lh.obj",
+  "projectMesh": "/meshes/lh.obj"
 }

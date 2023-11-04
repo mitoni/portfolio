@@ -36,6 +36,8 @@ p > a {
 
     background-color: var(--colorBg);
 
+    white-space: nowrap;
+
     &::before {
         content: "";
 

@@ -1,9 +1,9 @@
 {
-    "title": "Hi-Fiber",
-    "category": "product",
-    "subtitle": "The new generation of dental reinforcements",
-    "cover": "/assets/projects/hi-fiber/hi-fiber-cover.jpg",
-    "order": 1,
-    "heroMesh": "/meshes/hi-fiber.obj",
-    "projectMesh": "/meshes/hi-fiber.obj"
+  "title": "Hi-Fiber",
+  "category": "product",
+  "subtitle": "The new generation of dental reinforcements",
+  "cover": "../../assets/projects/hi-fiber/hi-fiber-cover.jpg",
+  "order": 1,
+  "heroMesh": "/meshes/hi-fiber.obj",
+  "projectMesh": "/meshes/hi-fiber.obj"
 }

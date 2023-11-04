@@ -51,7 +51,7 @@ const project = await getEntry("projects", "hi-design");
         <CustomImage
             slot="col2"
             class="logo"
-            src="/assets/projects/hi-design/cloud-infrastructure.svg"
+            src={import("../../assets/projects/hi-design/cloud-infrastructure.svg")}
             alt="moi dental cloud infrastructure diagram"
             width={1920}
             height={1080}
@@ -121,7 +121,7 @@ const project = await getEntry("projects", "hi-design");
         <CustomImage
             slot="col2"
             class="logo"
-            src="/assets/projects/hi-design/hi-design-main-window.jpg"
+            src={import("../../assets/projects/hi-design/hi-design-main-window.jpg")}
             alt="Hi-Design main window"
             width={1920}
             height={1200}

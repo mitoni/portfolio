@@ -2,6 +2,8 @@
 import Sprites from "../components/Sprites.svelte";
 import Row from "./rows/Row.astro";
 import Highlight from "./text/Highlight.astro";
+
+const props = Astro.props;
 ---
 
 <style>
@@ -53,7 +55,7 @@ import Highlight from "./text/Highlight.astro";
     }
 </style>
 
-<Row class="hero-row">
+<Row class="hero-row" {...props}>
     <Sprites client:only />
 
     <div class="hero-container">

@@ -1,5 +1,7 @@
 ---
 import Row from "../rows/Row.astro";
+
+const props = Astro.props;
 ---
 
 <style>
@@ -30,7 +32,7 @@ import Row from "../rows/Row.astro";
     }
 </style>
 
-<Row>
+<Row {...props}>
     <section class="centered-text-container">
         <slot name="pre" />
 

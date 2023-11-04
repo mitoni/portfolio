@@ -22,6 +22,7 @@ const project = await getEntry("projects", "hi-fiber");
     <ColsLeft title="the process">
         <div slot="col1">
             <h3>An optimized integrated process</h3>
+
             <p>
                 The first application of moi's innovative continuous fiber
                 additive manufacturing technology was in the dental care market,
@@ -50,7 +51,7 @@ const project = await getEntry("projects", "hi-fiber");
 
         <CustomImage
             slot="col2"
-            src="/assets/projects/hi-fiber/hi-fiber-croc-top.jpg"
+            src={import("../../assets/projects/hi-fiber/hi-fiber-croc-top.jpg")}
             alt="Hi-Fiber with pliers from top"
             width={1920}
             height={1200}
@@ -58,14 +59,14 @@ const project = await getEntry("projects", "hi-fiber");
 
         <Flex slot="col2">
             <CustomImage
-                src="/assets/projects/hi-fiber/hi-fiber-croc-front.jpg"
+                src={import("../../assets/projects/hi-fiber/hi-fiber-croc-front.jpg")}
                 alt="Hi-Fiber with pliers from front"
                 width={1920}
                 height={1200}
             />
 
             <CustomImage
-                src="/assets/projects/hi-fiber/hi-fiber-falling-multiple.jpg"
+                src={import("../../assets/projects/hi-fiber/hi-fiber-falling-multiple.jpg")}
                 alt="Multiple Hi-Fiber falling"
                 width={1920}
                 height={1200}
@@ -101,7 +102,7 @@ const project = await getEntry("projects", "hi-fiber");
 
         <CustomImage
             slot="col1"
-            src="/assets/projects/hi-fiber/hi-fiber-jello.jpg"
+            src={import("../../assets/projects/hi-fiber/hi-fiber-jello.jpg")}
             alt="Hi-Fiber transparency"
             width={1920}
             height={1200}
@@ -109,7 +110,7 @@ const project = await getEntry("projects", "hi-fiber");
 
         <CustomImage
             slot="col1"
-            src="/assets/projects/hi-fiber/hi-fiber-product-line.jpg"
+            src={import("../../assets/projects/hi-fiber/hi-fiber-product-line.jpg")}
             alt="Hi-Fiber product line"
             width={1920}
             height={1200}
@@ -117,7 +118,7 @@ const project = await getEntry("projects", "hi-fiber");
 
         <CustomImage
             slot="col1"
-            src="/assets/projects/hi-fiber/hi-fiber-ig.png"
+            src={import("../../assets/projects/hi-fiber/hi-fiber-ig.png")}
             alt="Hi-Fiber Instagram profile"
             width={1920}
             height={1200}
@@ -153,7 +154,7 @@ const project = await getEntry("projects", "hi-fiber");
 
         <CustomImage
             slot="col2"
-            src="/assets/projects/hi-fiber/hi-fiber-cad.jpg"
+            src={import("../../assets/projects/hi-fiber/hi-fiber-cad.jpg")}
             alt="Hi-Fiber CAD Software"
             width={1920}
             height={1200}
@@ -161,7 +162,7 @@ const project = await getEntry("projects", "hi-fiber");
 
         <CustomImage
             slot="col2"
-            src="/assets/projects/hi-fiber/hi-fiber-tutorials.jpg"
+            src={import("../../assets/projects/hi-fiber/hi-fiber-tutorials.jpg")}
             alt="Hi-Fiber CAD Software"
             width={1920}
             height={1200}

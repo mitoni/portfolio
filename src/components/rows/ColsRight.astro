@@ -42,11 +42,13 @@ const { title } = Astro.props;
     @media only screen and (max-width: 600px) {
         .col1 {
             grid-column: 1 / -1;
+            order: 1;
             gap: var(--spacingMd);
         }
 
         .col2 {
             grid-column: 1 / -1;
+            order: -1;
         }
 
         .cols-right-title {

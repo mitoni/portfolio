@@ -18,7 +18,6 @@
     import { getCollection } from "astro:content";
 
     const loader = new OBJLoader();
-    // const textureLoader = new TextureLoader();
 
     let container: HTMLAnchorElement | undefined = undefined;
     let camera: PerspectiveCamera;
@@ -42,6 +41,10 @@
     onMount(init);
 
     async function init() {
+    
+        // start loading 3d models right away
+        loadModels();
+
         const { width, height } = container!.getBoundingClientRect();
 
         camera = new PerspectiveCamera(60, width / height, 1, 2000);
@@ -88,9 +91,6 @@
 
         container?.appendChild(renderer.domElement);
 
-        // load 3d models
-        loadModels();
-
         setTimeout(() => {
             // tween opacity
             new TWEEN.Tween(wireMaterial)
@@ -124,24 +124,41 @@
             .map((project) => project.data.heroMesh)
             .filter((project): project is string => !!project);
 
-        geometries = await Promise.all(
-            shapes.map(async (path) => {
-                const obj = await loader.loadAsync(path);
+        // geometries = await Promise.all(
+        //    shapes.map(async (path) => {
+        //        const obj = await loader.loadAsync(path);
+        //        const geometry = (obj.children[0] as Mesh).geometry;
+        //        return geometry;
+        //    })
+        //);
+
+        // prefer async loading of meshes without waiting for the whole array to load
+        for (const path of shapes) {
+            loader.load(path, (obj) => {
                 const geometry = (obj.children[0] as Mesh).geometry;
-                return geometry;
-            })
-        );
+                geometries.push(geometry);
+            });
+        }
     }
 
     function iterate() {
-        draw(geometries[currentGeometryIdx]);
+        const geometry = geometries[currentGeometryIdx];
 
-        // change href
-        const id = projectIds[currentGeometryIdx];
-        container!.href = `/projects/${id}`;
+        if (geometry) {
+            draw(geometries[currentGeometryIdx]);
 
-        currentGeometryIdx =
-            currentGeometryIdx === shapes.length - 1 ? 0 : ++currentGeometryIdx;
+            // change href
+            const id = projectIds[currentGeometryIdx];
+
+            if (container) {
+                container!.href = `/projects/${id}`;
+            }
+
+            currentGeometryIdx =
+                currentGeometryIdx === shapes.length - 1
+                    ? 0
+                    : ++currentGeometryIdx;
+        }
 
         setTimeout(iterate, 3000);
     }

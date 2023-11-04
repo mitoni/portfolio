@@ -29,6 +29,12 @@ const { src, width, height, caption, ...props } = Astro.props;
         font-size: var(--fontSizeSm);
         color: var(--colorTextSecondary);
     }
+
+    @media (prefers-color-scheme: dark) {
+        img {
+            filter: none;
+        }
+    }
 </style>
 
 <div>

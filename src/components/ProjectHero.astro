@@ -3,12 +3,13 @@ interface Props {
     title: string;
     subtitle: string;
     category: string;
-    cover: string;
+    cover: LocalImageProps<any> | RemoteImageProps;
 }
 
-import { Image } from "astro:assets";
+import { Image, type RemoteImageProps } from "astro:assets";
 import Row from "./rows/Row.astro";
 import SectionTitle from "./text/SectionTitle.astro";
+import type { LocalImageProps } from "astro/assets";
 
 const props = Astro.props;
 ---
@@ -163,7 +164,6 @@ const props = Astro.props;
         class="project-image"
         src={props.cover}
         width={1920}
-        height={960}
         alt={`${props.title} cover image`}
         quality="max"
     />
