@@ -41,7 +41,6 @@
     onMount(init);
 
     async function init() {
-    
         // start loading 3d models right away
         loadModels();
 
@@ -141,24 +140,26 @@
         }
     }
 
-    function iterate() {
+    function iterate(): void {
         const geometry = geometries[currentGeometryIdx];
 
-        if (geometry) {
-            draw(geometries[currentGeometryIdx]);
-
-            // change href
-            const id = projectIds[currentGeometryIdx];
-
-            if (container) {
-                container!.href = `/projects/${id}`;
-            }
-
-            currentGeometryIdx =
-                currentGeometryIdx === shapes.length - 1
-                    ? 0
-                    : ++currentGeometryIdx;
+        if (!geometry) {
+            // wait a bit and check again if meshes are loaded
+            setTimeout(iterate, 200);
+            return;
         }
+
+        draw(geometries[currentGeometryIdx]);
+
+        // change href
+        const id = projectIds[currentGeometryIdx];
+
+        if (container) {
+            container!.href = `/projects/${id}`;
+        }
+
+        currentGeometryIdx =
+            currentGeometryIdx === shapes.length - 1 ? 0 : ++currentGeometryIdx;
 
         setTimeout(iterate, 3000);
     }
