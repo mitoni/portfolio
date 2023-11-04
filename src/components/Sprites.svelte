@@ -57,6 +57,8 @@
 
     function cleanup() {
         geometries = [];
+        projectIds = [];
+        shapes = [];
 
         geometry.dispose();
         material.dispose();
@@ -136,23 +138,14 @@
     }
 
     async function loadModels() {
-        const projects = (await getCollection("projects")).sort(
+        const projects = (await getCollection("projects")).filter((project) => !!project.data.heroMesh).sort(
             () => Math.random() - 0.5
         );
 
-        projectIds = projects.map((project) => project.id);
-
-        shapes = projects
-            .map((project) => project.data.heroMesh)
-            .filter((project): project is string => !!project);
-
-        // geometries = await Promise.all(
-        //    shapes.map(async (path) => {
-        //        const obj = await loader.loadAsync(path);
-        //        const geometry = (obj.children[0] as Mesh).geometry;
-        //        return geometry;
-        //    })
-        //);
+        for (const project of projects) {
+            projectIds.push(project.id)
+            shapes.push(project.data.heroMesh!)
+        }
 
         // prefer async loading of meshes without waiting for the whole array to load
         for (const path of shapes) {
@@ -166,19 +159,14 @@
     function iterate(): void {
         const geometry = geometries[currentGeometryIdx];
 
-        if (!geometry) {
-            // wait a bit and check again if meshes are loaded
-            setTimeout(iterate, 200);
-            return;
-        }
-
-        draw(geometries[currentGeometryIdx]);
+        draw(geometry);
 
         // change href
         const id = projectIds[currentGeometryIdx];
+        console.log({ geometries, shapes, projectIds, currentGeometryIdx, id });
 
         if (container) {
-            container!.href = `/projects/${id}`;
+            container.href = `/projects/${id}`;
         }
 
         currentGeometryIdx =
