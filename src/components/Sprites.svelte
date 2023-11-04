@@ -44,6 +44,17 @@
     onMount(init);
     onDestroy(cleanup);
 
+    window.addEventListener("resize", handleResize);
+
+    function handleResize() {
+        const { width, height } = container!.getBoundingClientRect();
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(width, height);
+    }
+
     function cleanup() {
         geometries = [];
 

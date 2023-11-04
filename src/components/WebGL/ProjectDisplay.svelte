@@ -1,8 +1,7 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { getCollection } from "astro:content";
     import {
-        Color,
         DoubleSide,
         FogExp2,
         Mesh,
@@ -33,6 +32,29 @@
     let meshes: Record<string, Mesh> = {};
 
     onMount(init);
+    onDestroy(cleanup);
+
+    window.addEventListener("resize", handleResize);
+
+    function handleResize() {
+        const { width, height } = container!.getBoundingClientRect();
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(width, height);
+    }
+
+    function cleanup() {
+        for (const mesh of Object.values(meshes)) {
+            (Array.isArray(mesh.material)
+                ? mesh.material
+                : [mesh.material]
+            ).forEach((material) => material.dispose());
+
+            mesh.geometry.dispose();
+        }
+    }
 
     function init() {
         const { width, height } = container!.getBoundingClientRect();
@@ -93,27 +115,6 @@
 
         const texture = await textureLoader.loadAsync("/textures/gray.png");
 
-        const categories = new Set(
-            projects.map((project) => project.data.category)
-        );
-
-        const color1 = new Color(
-            `rgb(${style.get().getPropertyValue("--red")})`
-        );
-
-        const color2 = new Color(
-            `rgb(${style.get().getPropertyValue("--purple")})`
-        );
-
-        const categoriesColors: Record<string, Color> = {};
-
-        Array.from(categories.keys()).forEach((category, i) => {
-            const t = i / (categories.size - 1) || 0;
-            const color = new Color().lerpColors(color1, color2, t);
-
-            categoriesColors[category] = color;
-        });
-
         const baseMaterial = new MeshMatcapMaterial({
             matcap: texture,
             side: DoubleSide,
@@ -125,7 +126,6 @@
 
         geometries.forEach((geometry, i) => {
             const material = baseMaterial.clone();
-            // material.color = categoriesColors[geometry.userData.category];
 
             const mesh = new Mesh(geometry, material);
             mesh.visible = false;
