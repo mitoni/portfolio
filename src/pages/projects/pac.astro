@@ -8,7 +8,7 @@ import ColsRight from "../../components/rows/ColsRight.astro";
 import Video from "../../components/Video.astro";
 import Flex from "../../components/rows/Flex.astro";
 import Centered from "../../components/rows/Centered.astro";
-import {Image} from "astro:assets"
+import { Image } from "astro:assets";
 
 const project = await getEntry("projects", "pac");
 ---
@@ -103,12 +103,14 @@ const project = await getEntry("projects", "pac");
 
         <Flex slot="col2">
             <Video
+                blend
                 autoplay
                 loop
                 src="/assets/projects/pac/pac-private-public-spaces.mp4"
             />
 
             <Video
+                blend
                 autoplay
                 loop
                 src="/assets/projects/pac/pac-theatres-configurations.mp4"
@@ -149,9 +151,16 @@ const project = await getEntry("projects", "pac");
         />
 
         <Flex slot="col1">
-            <Video autoplay loop src="/assets/projects/pac/pac-section.mp4" />
+            <Video
+                blend
+                autoplay
+                loop
+                src="/assets/projects/pac/pac-section.mp4"
+            />
 
             <CustomImage
+                blend
+                invertOnDark
                 src={import(
                     "../../assets/projects/pac/pac-dressing-room-plan.jpg"
                 )}
@@ -208,6 +217,7 @@ const project = await getEntry("projects", "pac");
         </div>
 
         <CustomImage
+            blend
             slot="col2"
             src={import("../../assets/projects/pac/pac-competition-model.jpg")}
             alt="PAC competition model"
@@ -216,6 +226,7 @@ const project = await getEntry("projects", "pac");
         />
 
         <Video
+            blend
             slot="col2"
             autoplay
             loop
@@ -224,12 +235,14 @@ const project = await getEntry("projects", "pac");
 
         <Flex slot="col2">
             <Video
+                blend
                 autoplay
                 loop
                 src="/assets/projects/pac/pac-public-floor.mp4"
             />
 
             <Video
+                blend
                 autoplay
                 loop
                 src="/assets/projects/pac/pac-moving-walls.mp4"
