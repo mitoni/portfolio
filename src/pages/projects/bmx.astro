@@ -40,14 +40,15 @@ const project = await getEntry("projects", "bmx");
                 collaboration with <a
                     href="https://www.autodesk.com/"
                     target="_blank">Autodesk</a
-                >. This design was created to highlight the capabilities of
-                Autodesk's Netfabb software, particularly in the areas of
-                additive manufacturing and topological optimization.
+                >, a multinational software corporation. This design was created
+                to highlight the capabilities of Autodesk's Netfabb software,
+                particularly in the areas of additive manufacturing and
+                topological optimization.
             </p>
 
             <p>
-                The BMX was displayed at Formnext 2017 in Frankfurt, Europe's
-                largest additive manufacturing exhibition.
+                The BMX was displayed at <strong>Formnext 2017</strong> in
+                Frankfurt, Europe's largest additive manufacturing exhibition.
             </p>
         </div>
 
@@ -66,13 +67,13 @@ const project = await getEntry("projects", "bmx");
 
             <p>
                 Two algorithms were developed for this project and were
-                subsequently implemented in Moi's tool pathing software. Both
+                subsequently implemented in moi's tool pathing software. Both
                 algorithms are voxel-based and are built on top of Millipede, a
-                renowned Grasshopper plugin for topological optimization. The
-                first algorithm was utilized to design the overall shape and to
-                remove superfluous materials, whereas the second determined the
-                directions of maximum stress, which then guided the robot's
-                path.
+                renowned Grasshopper plugin for structural analysis and
+                topological optimization. The first algorithm was utilized to
+                design the overall shape and to remove superfluous materials,
+                whereas the second determined the directions of maximum stress,
+                which then guided the robot's path.
             </p>
 
             <p>
@@ -92,7 +93,9 @@ const project = await getEntry("projects", "bmx");
 
         <CustomImage
             slot="col1"
-            src={import("../../assets/projects/bmx/bmx-fibers-optimization.gif")}
+            src={import(
+                "../../assets/projects/bmx/bmx-fibers-optimization.gif"
+            )}
             alt="Optimization algorithm to opimize the fibers"
             width={800}
             height={450}
@@ -104,11 +107,12 @@ const project = await getEntry("projects", "bmx");
             <h3>Printing fine tuning</h3>
 
             <p>
-                For this project utilizing continuous fiber, specific 3D
-                printing algorithms were developed. Their design aimed to join
-                fibers in a manner that maximized a single path, making the
-                printing process more efficient. Consequently, the time needed
-                for the cutting phase was substantially reduced.
+                For this project, which utilizes continuous fiber, specific 3D
+                printing algorithms have been developed. These algorithms are
+                designed to join fibers in a way that maximizes a single path,
+                thus making the printing process more efficient. As a result,
+                the time required for the cutting phase has been substantially
+                reduced.
             </p>
 
             <p>
