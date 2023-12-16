@@ -68,6 +68,8 @@
     --colorProjectsCategory: rgb(var(--gray));
 
     --colorLinkBg: rgb(var(--white));
+
+    --colorStrikethrough: rgb(var(--red));
 }
 
 @media (prefers-color-scheme: dark) {

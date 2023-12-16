@@ -71,3 +71,8 @@ strong {
     font-weight: var(--fontWeightMd);
     color: var(--colorText);
 }
+
+s {
+    text-decoration-color: var(--colorStrikethrough);
+    text-decoration-thickness: 2px;
+}
