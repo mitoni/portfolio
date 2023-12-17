@@ -3,11 +3,11 @@
     --fontMono: "archia";
     --fontSans: "switzer";
 
-    --fontSizeSm: 0.875em;
-    --fontSizeMd: 1em;
-    --fontSizeLg: 1.5em;
-    --fontSizeXl: 3em;
-    --fontSizeXxl: 6em;
+    --fontSizeSm: 0.618rem;
+    --fontSizeMd: 1rem;
+    --fontSizeLg: 1.618rem;
+    --fontSizeXl: 2.618rem;
+    --fontSizeXxl: 4.236rem;
 
     --fontWeightSm: 200;
     --fontWeightMd: 400;
