@@ -1,0 +1,9 @@
+{
+  "title": "V Necklace",
+  "category": "research",
+  "subtitle": "Practical non-linear slicing",
+  "cover": "../../assets/projects/v/v-cover.jpg",
+  "order": 98,
+  "heroMesh": "",
+  "projectMesh": "/meshes/v.obj"
+}
