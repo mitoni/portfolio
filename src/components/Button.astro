@@ -26,6 +26,10 @@ const { class: cls, ...props } = Astro.props;
         &:hover {
             background-color: var(--colorWhite);
         }
+
+        &[data-active] {
+            background-color: var(--colorWhite);
+        }
     }
 
     @media only screen and (max-width: 600px) {

@@ -1,14 +1,19 @@
 ---
-import { getCollection } from "astro:content";
-
 const { class: cls, ...props } = Astro.props;
+
+import { getCollection } from "astro:content";
 
 import Row from "./rows/Row.astro";
 import SectionTitle from "./text/SectionTitle.astro";
 import ProjectDisplay from "./WebGL/ProjectDisplay.svelte";
+import Button from "./Button.astro";
 
 const projects = (await getCollection("projects")).sort(
     (a, b) => a.data.order - b.data.order,
+);
+
+const categories = Array.from(
+    new Set(projects.map((project) => project.data.category)),
 );
 
 const rows = Math.max(Math.ceil(projects.length / 2), 8);
@@ -32,6 +37,41 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
         gap: var(--spacingMd);
     }
 
+    .projects-categories-wrapper {
+        grid-column: 1 / -1;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    .projects-categories {
+        display: flex;
+        flex-direction: row;
+
+        align-items: start;
+        justify-content: start;
+        align-content: flex-start;
+
+        flex-wrap: wrap;
+
+        gap: var(--spacingMd);
+    }
+
+    .projects-categories-filter {
+        padding-left: var(--spacingSm);
+        padding-bottom: var(--spacingMd);
+
+        font-family: var(--fontMono);
+        font-weight: var(--fontWeightLg);
+    }
+
+    .projects-categories-button {
+        text-transform: capitalize;
+        white-space: nowrap;
+
+        color: var(--colorTextSecondary);
+    }
+
     .projects-project-container {
         padding: var(--spacingMd);
 
@@ -50,6 +90,11 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
 
         &:hover .projects-project-subtitle {
             opacity: 1;
+        }
+
+        &:not([data-show]) {
+            opacity: 0.1;
+            pointer-events: none;
         }
     }
 
@@ -145,26 +190,72 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
 <script>
     import { selectedProject } from "./stores/selectedProject";
 
+    const activeCategories = new Set();
+    let projectsEl: NodeList;
+
     attachListeners();
 
     function attachListeners() {
-        const projectsEl = document.querySelectorAll(
-            ".projects-project-container",
+        projectsEl = document.querySelectorAll(".projects-project-container");
+
+        const projectsCategories = document.querySelectorAll(
+            ".projects-categories-button",
         );
 
-        projectsEl.forEach((projectEl) => {
-            projectEl.addEventListener("mouseenter", handleMouseEnter);
+        projectsEl.forEach((el) => {
+            el.addEventListener("mouseenter", handleMouseEnter);
         });
+
+        projectsCategories.forEach((el) =>
+            el.addEventListener("click", handleMouseCategoryClick),
+        );
     }
 
     function handleMouseEnter(event: Event) {
         const target = event.target as HTMLElement;
+
         const title = target?.querySelector(
             ".projects-project-title",
         )?.innerHTML;
 
         if (title) {
             selectedProject.set(title);
+        }
+    }
+
+    function handleMouseCategoryClick(event: Event) {
+        const target = event.target as HTMLElement;
+        const category = target.getAttribute("data-category");
+
+        // Set active
+        const isActive = activeCategories.has(category);
+        if (isActive) {
+            // Remove attr
+            target.removeAttribute("data-active");
+            // Remove from active list
+            activeCategories.delete(category);
+        } else {
+            // Add attr
+            target.setAttribute("data-active", "");
+            // Add to active list
+            activeCategories.add(category);
+        }
+
+        // If active categories is empty display all
+        if (!activeCategories.size) {
+            projectsEl.forEach((project) =>
+                (project as HTMLElement).setAttribute("data-show", ""),
+            );
+        } else {
+            projectsEl.forEach((project) => {
+                const el = project as HTMLElement;
+                const category = el.getAttribute("data-category");
+                const show = activeCategories.has(category);
+
+                show
+                    ? el.setAttribute("data-show", "")
+                    : el.removeAttribute("data-show");
+            });
         }
     }
 </script>
@@ -179,11 +270,29 @@ const rows = Math.max(Math.ceil(projects.length / 2), 8);
     </section>
 
     <section class="projects-project-list">
+        <section class="projects-categories-wrapper">
+            <span class="projects-categories-filter">filter</span>
+            <section class="projects-categories">
+                {
+                    categories.map((category) => (
+                        <Button
+                            data-category={category}
+                            class="projects-categories-button"
+                        >
+                            {category}
+                        </Button>
+                    ))
+                }
+            </section>
+        </section>
+
         {
-            projects.map((project, i) => (
+            projects.map((project) => (
                 <a
                     href={`/projects/${project.id}`}
                     class="projects-project-container"
+                    data-category={project.data.category}
+                    data-show
                 >
                     <section>
                         <span class="projects-project-subtitle">

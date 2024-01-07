@@ -138,29 +138,29 @@
 /*     font-style: normal; */
 /* } */
 
-@font-face {
-    font-family: 'baskerville';
-    src: url('/fonts/baskerville/baskerville_serial-bold-webfont.woff2') format('woff2'),
-         url('/fonts/baskerville/baskerville_serial-bold-webfont.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-}
+/* @font-face { */
+/*     font-family: 'baskerville'; */
+/*     src: url('/fonts/baskerville/baskerville_serial-bold-webfont.woff2') format('woff2'), */
+/*          url('/fonts/baskerville/baskerville_serial-bold-webfont.woff') format('woff'); */
+/*     font-weight: 700; */
+/*     font-style: normal; */
+/* } */
 
-@font-face {
-    font-family: 'baskerville';
-    src: url('/fonts/baskerville/baskerville_serial-heavy-webfont.woff2') format('woff2'),
-         url('/fonts/baskerville/baskerville_serial-heavy-webfont.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-}
+/* @font-face { */
+/*     font-family: 'baskerville'; */
+/*     src: url('/fonts/baskerville/baskerville_serial-heavy-webfont.woff2') format('woff2'), */
+/*          url('/fonts/baskerville/baskerville_serial-heavy-webfont.woff') format('woff'); */
+/*     font-weight: 900; */
+/*     font-style: normal; */
+/* } */
 
-@font-face {
-    font-family: 'baskerville';
-    src: url('/fonts/baskerville/baskerville_serial-light-webfont.woff2') format('woff2'),
-         url('/fonts/baskerville/baskerville_serial-light-webfont.woff') format('woff');
-    font-weight: 300;
-    font-style: normal;
-}
+/* @font-face { */
+/*     font-family: 'baskerville'; */
+/*     src: url('/fonts/baskerville/baskerville_serial-light-webfont.woff2') format('woff2'), */
+/*          url('/fonts/baskerville/baskerville_serial-light-webfont.woff') format('woff'); */
+/*     font-weight: 300; */
+/*     font-style: normal; */
+/* } */
 
 /* @font-face { */
 /*     font-family: 'baskerville'; */
@@ -170,13 +170,13 @@
 /*     font-style: normal; */
 /* } */
 
-@font-face {
-    font-family: 'baskerville';
-    src: url('/fonts/baskerville/baskerville_serial-regular-webfont.woff2') format('woff2'),
-         url('/fonts/baskerville/baskerville_serial-regular-webfont.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-}
+/* @font-face { */
+/*     font-family: 'baskerville'; */
+/*     src: url('/fonts/baskerville/baskerville_serial-regular-webfont.woff2') format('woff2'), */
+/*          url('/fonts/baskerville/baskerville_serial-regular-webfont.woff') format('woff'); */
+/*     font-weight: 400; */
+/*     font-style: normal; */
+/* } */
 
 /* @font-face { */
 /*     font-family: 'baskerville'; */

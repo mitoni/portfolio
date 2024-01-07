@@ -1,5 +1,5 @@
 :root {
-    --fontSerif: "baskerville";
+    --fontSerif: "STIX Two Text Variable";
     --fontMono: "archia";
     --fontSans: "switzer";
 
@@ -56,7 +56,7 @@
     --colorHeroWireframe: rgb(var(--almostBlack));
 
     --colorSelection: rgb(var(--almostBlack));
-    --colorSelectionBg: rgb(var(--white));
+    --colorSelectionBg: rgb(var(--warmWhite));
 
     --colorHighlightBg: rgb(var(--almostBlack));
     --colorHighlightText: rgb(var(--warmWhite));
