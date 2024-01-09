@@ -21,6 +21,7 @@ const { title, description, url, date, class: cls, ...props } = Astro.props;
         flex-direction: row;
         justify-content: space-between;
         align-content: space-between;
+        align-items: center;
     }
 
     .about-line-title {
@@ -42,6 +43,9 @@ const { title, description, url, date, class: cls, ...props } = Astro.props;
 
     .about-line-date {
         color: var(--colorTextSecondary);
+        font-size: var(--fontSizeSm);
+        min-width: 25%;
+        text-align: right;
     }
 
     .about-line-link {
