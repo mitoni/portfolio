@@ -1,0 +1,9 @@
+{
+  "title": "Atropos",
+  "category": "research",
+  "subtitle": "Redefining composites manufacturing",
+  "cover": "../../assets/projects/atropos/atropos-cover.jpg",
+  "order": 3,
+  "heroMesh": "/meshes/atropos.obj",
+  "projectMesh": "/meshes/atropos.obj"
+}

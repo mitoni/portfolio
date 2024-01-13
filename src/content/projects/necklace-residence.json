@@ -3,7 +3,7 @@
   "category": "architecture",
   "subtitle": "Award winning private residence in Long Island",
   "cover": "../../assets/projects/necklace-residence/necklace-residence-cover.jpg",
-  "order": 4,
+  "order": 5,
   "heroMesh": "/meshes/lh.obj",
   "projectMesh": "/meshes/lh.obj"
 }
