@@ -22,7 +22,7 @@
     const loader = new OBJLoader();
     const textureLoader = new TextureLoader();
 
-    const morphingTime = 500;
+    const morphingTime = 250;
 
     let container: HTMLElement | undefined = undefined;
     let camera: PerspectiveCamera;
