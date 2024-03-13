@@ -119,6 +119,15 @@
         // update TWEEN
         TWEEN.update();
 
+        if (window.innerWidth < 600) {
+            scene.rotateY(Math.PI / 1e3);
+        } else {
+            camera.position.x += (mouseX - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY - camera.position.y) * 0.05;
+
+            camera.lookAt(scene.position);
+        }
+
         render();
     }
 
@@ -164,15 +173,6 @@
     }
 
     function render() {
-        if (window.innerWidth < 600) {
-            scene.rotateY(Math.PI / 1e3);
-        } else {
-            camera.position.x += (mouseX - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY - camera.position.y) * 0.05;
-
-            camera.lookAt(scene.position);
-        }
-
         renderer.render(scene, camera);
     }
 

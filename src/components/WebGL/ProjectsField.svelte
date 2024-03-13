@@ -8,7 +8,6 @@
         DoubleSide,
         Fog,
         Group,
-        Material,
         Matrix4,
         Mesh,
         MeshMatcapMaterial,
@@ -42,6 +41,7 @@
     let renderer: WebGLRenderer;
 
     let fieldLength: number = 0;
+    let targetCameraX = 0;
 
     let meshes: Record<string, Mesh> = {};
     let selected: Mesh | undefined = undefined;
@@ -89,8 +89,9 @@
         const perc = -top / (height - window.innerHeight / 3);
 
         const move = perc * fieldLength;
+        targetCameraX = move;
 
-        camera.position.setX(move);
+        // camera.position.setX(move);
     }
 
     function handleMouseDown() {
@@ -260,9 +261,13 @@
     function animate() {
         requestAnimationFrame(animate);
 
+        // Rotate geometry
         if (selected) {
             selected.rotateY(0.005);
         }
+
+        // Smooth camera movement
+        camera.position.x += (targetCameraX - camera.position.x) * 0.05;
 
         render();
     }
@@ -490,7 +495,7 @@
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 1rem;
+        bottom: 2rem;
 
         display: flex;
         flex-direction: row;
