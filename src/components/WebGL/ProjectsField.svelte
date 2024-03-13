@@ -42,6 +42,8 @@
 
     let fieldLength: number = 0;
     let targetCameraX = 0;
+    let scrollMult = 0.6;
+    let inertia = 0.2;
 
     let meshes: Record<string, Mesh> = {};
     let selected: Mesh | undefined = undefined;
@@ -50,7 +52,8 @@
     const raycaster = new Raycaster();
 
     const dz = 2000;
-    const dx = (dz * Math.sqrt(3)) / 2;
+    // const dx = (dz * Math.sqrt(3)) / 2;
+    const dx = dz;
     const delta = dz * 0.1;
     const targetScale = 1.33;
     const morphingTime = 250;
@@ -86,9 +89,9 @@
         if (!container) return;
 
         const { top, height } = container.getBoundingClientRect();
-        const perc = -top / (height - window.innerHeight / 3);
+        const perc = -(top - window.innerHeight / 2) / (height);
 
-        const move = perc * fieldLength;
+        const move = perc * fieldLength * scrollMult;
         targetCameraX = move;
 
         // camera.position.setX(move);
@@ -267,7 +270,7 @@
         }
 
         // Smooth camera movement
-        camera.position.x += (targetCameraX - camera.position.x) * 0.05;
+        camera.position.x += (targetCameraX - camera.position.x) * inertia
 
         render();
     }
@@ -419,11 +422,9 @@
             // Inside
             ["/models/rocks2.glb", new Vector3(-7 * dx, 0, 0)],
             ["/models/rocks1.glb", new Vector3(-5 * dx, 0, dz / 2)],
-            ["/models/tree1.glb", new Vector3(-3 * dx, 0, -dz / 2)],
             ["/models/rocks1.glb", new Vector3(-2 * dx, 0, 0)],
             ["/models/rocks2.glb", new Vector3(dx, 0, dz / 2)],
             ["/models/rocks1.glb", new Vector3(7 * dx, 0, dz / 2)],
-            ["/models/tree1.glb", new Vector3(8 * dx, 0, -dz / 2)],
 
             // Outside
             ["/models/rocks1.glb", new Vector3(-dx, 0, dz)],
@@ -479,7 +480,7 @@
 <style>
     .projects-container {
         width: 100%;
-        height: 150vh;
+        height: 300vh;
     }
 
     .projects-canvas {
@@ -492,7 +493,7 @@
     }
 
     .projects-selected-container {
-        position: absolute;
+        position: fixed;
         left: 0;
         right: 0;
         bottom: 2rem;
@@ -501,6 +502,8 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+
+        pointer-events: none;
     }
 
     .projects-selected-chip {
@@ -518,6 +521,8 @@
 
         padding: var(--spacingMd);
         filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.05));
+
+        pointer-events: all;
     }
 
     .projects-selected-chip-title {
