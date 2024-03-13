@@ -1,0 +1,549 @@
+<script lang="ts">
+    import { onDestroy, onMount } from "svelte";
+    import { getCollection } from "astro:content";
+    import {
+        AmbientLight,
+        Color,
+        DirectionalLight,
+        DoubleSide,
+        Fog,
+        Group,
+        Material,
+        Matrix4,
+        Mesh,
+        MeshMatcapMaterial,
+        PerspectiveCamera,
+        PlaneGeometry,
+        Raycaster,
+        Scene,
+        ShadowMaterial,
+        TextureLoader,
+        VSMShadowMap,
+        Vector2,
+        Vector3,
+        WebGLRenderer,
+    } from "three";
+
+    import TWEEN from "@tweenjs/tween.js";
+
+    import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+    import { style } from "../stores/style";
+    import { fly } from "svelte/transition";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+    const loader = new OBJLoader();
+    const GltfLoader = new GLTFLoader();
+    const textureLoader = new TextureLoader();
+
+    let canvas: HTMLElement | undefined = undefined;
+    let container: HTMLElement | undefined = undefined;
+    let camera: PerspectiveCamera;
+    let scene: Scene;
+    let renderer: WebGLRenderer;
+
+    let fieldLength: number = 0;
+
+    let meshes: Record<string, Mesh> = {};
+    let selected: Mesh | undefined = undefined;
+    let projects: Awaited<ReturnType<typeof getCollection<"projects">>>;
+
+    const raycaster = new Raycaster();
+
+    const dz = 2000;
+    const dx = (dz * Math.sqrt(3)) / 2;
+    const delta = dz * 0.1;
+    const targetScale = 1.33;
+    const morphingTime = 250;
+    const debounceTime = 100;
+
+    $: {
+        if (selected) {
+            document.body.style.cursor = "pointer";
+        } else {
+            document.body.style.cursor = "unset";
+        }
+    }
+
+    $: displayProject = projects?.find((project) => {
+        return project.id === selected?.userData?.id;
+    });
+
+    onMount(init);
+    onDestroy(cleanup);
+
+    function handleResize() {
+        const { width, height } = canvas!.getBoundingClientRect();
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(width, height);
+
+        handleScroll();
+    }
+
+    function handleScroll() {
+        if (!container) return;
+
+        const { top, height } = container.getBoundingClientRect();
+        const perc = -top / (height - window.innerHeight / 3);
+
+        const move = perc * fieldLength;
+
+        camera.position.setX(move);
+    }
+
+    function handleMouseDown() {
+        if (!displayProject) return;
+        window.location.href = `/projects/${displayProject.id}`;
+    }
+
+    function cleanup() {
+        for (const mesh of Object.values(meshes)) {
+            (Array.isArray(mesh.material)
+                ? mesh.material
+                : [mesh.material]
+            ).forEach((material) => material.dispose());
+
+            mesh.geometry.dispose();
+        }
+
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("scroll", handleScroll);
+    }
+
+    function handleMouseMove(event: MouseEvent) {
+        const canvasBounds = renderer.domElement.getBoundingClientRect();
+
+        const x =
+            ((event.clientX - canvasBounds.left) /
+                (canvasBounds.right - canvasBounds.left)) *
+                2 -
+            1;
+        const y =
+            -(
+                (event.clientY - canvasBounds.top) /
+                (canvasBounds.bottom - canvasBounds.top)
+            ) *
+                2 +
+            1;
+
+        raycaster.setFromCamera(new Vector2(x, y), camera);
+
+        const intersects = raycaster.intersectObjects(
+            Object.values(meshes),
+            false,
+        );
+        const first = intersects[0]?.object as Mesh;
+
+        // Early return on same objecs being hit
+        if (first && selected && first.id === selected.id) return;
+
+        if (first) {
+            // Debounce selected
+            setTimeout(() => {
+                if (!selected) return;
+
+                new TWEEN.Tween(selected.parent)
+                    .to(
+                        {
+                            scale: new Vector3(
+                                targetScale,
+                                targetScale,
+                                targetScale,
+                            ),
+                        },
+                        debounceTime,
+                    )
+                    .easing(TWEEN.Easing.Exponential.InOut)
+                    .start();
+
+                new TWEEN.Tween(selected.material as MeshMatcapMaterial)
+                    .to(
+                        {
+                            color: new Color(
+                                `rgb(${style.get().getPropertyValue("--red")})`,
+                            ),
+                        },
+                        morphingTime,
+                    )
+                    .easing(TWEEN.Easing.Exponential.InOut)
+                    .start();
+            }, debounceTime);
+
+            selected = first;
+        } else {
+            if (selected) {
+                setTimeout(() => {
+                    const back = Object.values(meshes).filter((mesh) => {
+                        return mesh !== selected && mesh.parent!.scale.x > 1;
+                    });
+
+                    if (back.length > 0) {
+                        back.forEach((mesh) => {
+                            new TWEEN.Tween(mesh.parent)
+                                .to(
+                                    { scale: new Vector3(1, 1, 1) },
+                                    morphingTime,
+                                )
+                                .easing(TWEEN.Easing.Exponential.InOut)
+                                .start();
+
+                            new TWEEN.Tween(mesh.material as MeshMatcapMaterial)
+                                .to(
+                                    {
+                                        color: new Color(
+                                            `rgb(${style
+                                                .get()
+                                                .getPropertyValue(
+                                                    "--darkGray",
+                                                )})`,
+                                        ),
+                                    },
+                                    morphingTime,
+                                )
+                                .easing(TWEEN.Easing.Exponential.InOut)
+                                .start();
+                        });
+                    }
+                }, debounceTime);
+            }
+
+            selected = undefined;
+        }
+    }
+
+    function init() {
+        window.addEventListener("resize", handleResize);
+        window.addEventListener("scroll", handleScroll);
+
+        container?.addEventListener("mousemove", handleMouseMove);
+        container?.addEventListener("mousedown", handleMouseDown);
+
+        const { width, height } = canvas!.getBoundingClientRect();
+
+        const cameraPos = new Vector3(3 * dx, 2 * dx, 0);
+        const far = Math.sqrt(
+            Math.pow(cameraPos.x, 2) + Math.pow(cameraPos.y, 2),
+        );
+
+        camera = new PerspectiveCamera(30, width / height, 1, 2 * far);
+
+        camera.position.setX(cameraPos.x);
+        camera.position.setY(cameraPos.y);
+        camera.position.setZ(cameraPos.z);
+
+        camera.lookAt(new Vector3(0, 0, 0));
+
+        scene = new Scene();
+        scene.fog = new Fog(
+            `${style.get().getPropertyValue("--colorBg")})`,
+            far,
+            1.5 * far,
+        );
+
+        // Setup render passes
+        renderer = new WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(width, height);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = VSMShadowMap;
+
+        canvas?.appendChild(renderer.domElement);
+
+        // load 3d models
+        loadModels();
+
+        animate();
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        if (selected) {
+            selected.rotateY(0.005);
+        }
+
+        render();
+    }
+
+    function render() {
+        // update TWEEN
+        TWEEN.update();
+        renderer.render(scene, camera);
+    }
+
+    async function loadModels() {
+        projects = (await getCollection("projects")).sort(
+            (a, b) => a.data.order - b.data.order,
+        );
+
+        const shapes = projects.map((project) => project.data.projectMesh);
+        const ids = projects.map((project) => project.id);
+
+        const geometries = await Promise.all(
+            shapes.map(async (path) => {
+                const obj = await loader.loadAsync(path);
+                const geometry = (obj.children[0] as Mesh).geometry;
+                geometry.computeBoundingBox();
+                return geometry;
+            }),
+        );
+
+        // Calculate total field length
+        fieldLength = geometries.length * dx * 2;
+
+        // Add scene lights
+        const dirLight = new DirectionalLight(0xfffffff, 1);
+        dirLight.position.setY(1000);
+        dirLight.position.setX(-1000);
+
+        dirLight.shadow.camera.far = fieldLength;
+        dirLight.shadow.camera.left = -dz;
+        dirLight.shadow.camera.right = dz;
+        dirLight.shadow.camera.top = fieldLength;
+        dirLight.shadow.camera.bottom = -dz;
+        dirLight.shadow.blurSamples = 25;
+        dirLight.shadow.radius = 10;
+        dirLight.shadow.mapSize.x = 1024;
+        dirLight.shadow.mapSize.y = 1024;
+        dirLight.castShadow = true;
+
+        scene.add(dirLight);
+        // scene.add(new CameraHelper(dirLight.shadow.camera));
+
+        const ambient = new AmbientLight(0xffffff, 1);
+        scene.add(ambient);
+
+        // Background grid
+        // const col1 = `rgb(${style.get().getPropertyValue("--lightGray")})`;
+        // const col2 = `rgb(${style.get().getPropertyValue("--lightGray")})`;
+        // const grid = new GridHelper(fieldLength, fieldLength / 100, col1, col2);
+        // scene.add(grid);
+
+        const basePlaneMaterial = new ShadowMaterial({
+            opacity: 0.15,
+        });
+
+        const plane = new Mesh(
+            new PlaneGeometry(fieldLength, fieldLength, 10, 10),
+            basePlaneMaterial,
+        );
+        plane.rotateX(-Math.PI / 2);
+        plane.receiveShadow = true;
+        plane.castShadow = false;
+        scene.add(plane);
+
+        // Generate grid of basepoints
+        const basePoints: Vector3[] = [];
+        let i: number;
+
+        // Desktop grid
+        if (window.innerWidth > 600) {
+            for (i = 0; i < geometries.length; i += 3) {
+                const cycle = Math.floor(i / 3);
+                const offX = cycle * 2 * dx;
+
+                const p1 = new Vector3(
+                    offX + delta * Math.random() - delta,
+                    0,
+                    -dz / 2,
+                );
+                const p2 = new Vector3(
+                    offX + delta * Math.random() - delta,
+                    0,
+                    dz / 2,
+                );
+                const p3 = new Vector3(
+                    dx + offX + delta * Math.random() - delta,
+                    0,
+                    0,
+                );
+
+                basePoints.push(p1, p2, p3);
+            }
+            // Mobile grid
+        } else {
+            for (i = 0; i < geometries.length; i++) {
+                const pt = new Vector3(i * dx, 0, 0);
+                basePoints.push(pt);
+            }
+        }
+
+        const texture = await textureLoader.loadAsync("/textures/gray.png");
+
+        const baseMaterial = new MeshMatcapMaterial({
+            matcap: texture,
+            side: DoubleSide,
+            color: `rgb(${style.get().getPropertyValue("--darkGray")})`,
+        });
+
+        geometries.forEach((geometry, i) => {
+            const title = ids[i];
+            const material = baseMaterial.clone();
+            const mesh = new Mesh(geometry, material);
+            mesh.castShadow = true;
+
+            const group = new Group();
+            group.add(mesh);
+
+            meshes[title] = mesh;
+            mesh.userData.id = ids[i];
+
+            // Move group to Y 0
+            mesh.applyMatrix4(
+                new Matrix4().setPosition(
+                    new Vector3(0, -(geometry.boundingBox?.min?.y ?? 0), 0),
+                ),
+            );
+
+            group.applyMatrix4(new Matrix4().makeRotationY(Math.PI / 2));
+            group.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
+
+            scene.add(group);
+        });
+
+        // Add nature to scene
+        const modelsMaterial = new MeshMatcapMaterial({
+            matcap: texture,
+            side: DoubleSide,
+            color: `rgb(${style.get().getPropertyValue("--warmWhite")})`,
+        });
+
+        const models: [string, Vector3][] = [
+            // Inside
+            ["/models/rocks2.glb", new Vector3(-7 * dx, 0, 0)],
+            ["/models/rocks1.glb", new Vector3(-5 * dx, 0, dz / 2)],
+            ["/models/tree1.glb", new Vector3(-3 * dx, 0, -dz / 2)],
+            ["/models/rocks1.glb", new Vector3(-2 * dx, 0, 0)],
+            ["/models/rocks2.glb", new Vector3(dx, 0, dz / 2)],
+            ["/models/rocks1.glb", new Vector3(7 * dx, 0, dz / 2)],
+            ["/models/tree1.glb", new Vector3(8 * dx, 0, -dz / 2)],
+
+            // Outside
+            ["/models/rocks1.glb", new Vector3(-dx, 0, dz)],
+            ["/models/rocks1.glb", new Vector3(2 * dx, 0, -dz)],
+            ["/models/rocks2.glb", new Vector3(3 * dx, 0, dz)],
+            ["/models/rocks1.glb", new Vector3(5 * dx, 0, -dz)],
+        ];
+
+        models.forEach(async (model) => {
+            const obj = await GltfLoader.loadAsync(model[0]);
+            const objects = obj.scene.children.map((child) => {
+                child.traverse((obj) => {
+                    if (obj.type === "Mesh") {
+                        (obj as Mesh).material = modelsMaterial;
+                        (obj as Mesh).castShadow = true;
+                    }
+                });
+                child.applyMatrix4(
+                    new Matrix4().makeRotationY(2 * Math.PI * Math.random()),
+                );
+                child.applyMatrix4(new Matrix4().setPosition(model[1]));
+                return child;
+            });
+
+            scene.add(...objects);
+        });
+    }
+</script>
+
+<section id="projects" class="projects-container" bind:this={container}>
+    <div class="projects-canvas" bind:this={canvas}>
+        <div class="projects-selected-container">
+            {#if displayProject}
+                <div
+                    class="projects-selected-chip"
+                    transition:fly={{ y: 50, duration: morphingTime }}
+                >
+                    <div class="projects-selected-chip-category">
+                        {displayProject?.data?.category}
+                    </div>
+                    <div class="projects-selected-chip-title">
+                        {displayProject?.data?.title}
+                    </div>
+                    <div class="projects-selected-chip-subtitle">
+                        {displayProject?.data?.subtitle}
+                    </div>
+                </div>
+            {/if}
+        </div>
+    </div>
+</section>
+
+<style>
+    .projects-container {
+        width: 100%;
+        height: 150vh;
+    }
+
+    .projects-canvas {
+        position: sticky;
+
+        top: 0;
+
+        width: 100%;
+        height: 100vh;
+    }
+
+    .projects-selected-container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 1rem;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .projects-selected-chip {
+        background: var(--colorNavbarBg);
+        border-radius: var(--radiusMd);
+        border: 1px solid rgba(var(--lightGray), 0.25);
+
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(30px);
+
+        display: "flex";
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        padding: var(--spacingMd);
+        filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.05));
+    }
+
+    .projects-selected-chip-title {
+        font-family: var(--fontSerif);
+        font-weight: var(--fontWeightLg);
+        font-size: var(--fontSizeLg);
+    }
+
+    .projects-selected-chip-subtitle {
+        font-family: var(--fontSans);
+        font-size: var(--fontSizeMd);
+
+        color: var(--colorTextSecondary);
+    }
+
+    .projects-selected-chip-category {
+        font-family: var(--fontMono);
+        font-size: var(--fontSizeSm);
+
+        text-transform: uppercase;
+
+        color: var(--colorProjectsCategory);
+
+        padding-bottom: var(--spacingXs);
+
+        &::before {
+            content: "[ ";
+        }
+
+        &::after {
+            content: " ]";
+        }
+    }
+</style>
