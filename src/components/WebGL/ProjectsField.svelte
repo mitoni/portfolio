@@ -267,6 +267,7 @@
         renderer.setSize(width, height);
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = VSMShadowMap;
+        renderer.domElement.style.position = "relative";
         renderer.domElement.style.zIndex = "1";
 
         canvas?.appendChild(renderer.domElement);
@@ -278,6 +279,7 @@
         cssRenderer.domElement.style.top = "0px";
         cssRenderer.domElement.style.zIndex = "10";
         cssRenderer.domElement.style.pointerEvents = "none";
+        cssRenderer.domElement.style.zIndex = "0";
 
         canvas?.appendChild(cssRenderer.domElement);
 
