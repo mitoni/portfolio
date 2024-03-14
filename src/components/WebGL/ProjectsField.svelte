@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "../../style/three-classes.css"
+    import "../../style/three-classes.css";
 
     import { onDestroy, onMount } from "svelte";
     import { getCollection } from "astro:content";
@@ -407,7 +407,7 @@
 
         geometries.forEach((geometry, i) => {
             const projectId = ids[i];
-            const project = projects.find(p => p.id === projectId);
+            const project = projects.find((p) => p.id === projectId);
             const material = baseMaterial.clone();
             const mesh = new Mesh(geometry, material);
             mesh.castShadow = true;
@@ -496,7 +496,7 @@
     }
 </script>
 
-<section id="projects" class="projects-container" bind:this={container}>
+<section class="projects-container" bind:this={container}>
     <div class="projects-canvas" bind:this={canvas}>
         <div class="projects-selected-container">
             {#if displayProject}
@@ -599,4 +599,3 @@
         }
     }
 </style>
-
