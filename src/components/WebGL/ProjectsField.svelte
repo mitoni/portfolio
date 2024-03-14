@@ -102,8 +102,6 @@
 
         const move = perc * fieldLength * scrollMult;
         targetCameraX = move;
-
-        // camera.position.setX(move);
     }
 
     function handleMouseDown() {
@@ -123,6 +121,9 @@
 
         window.removeEventListener("resize", handleResize);
         window.removeEventListener("scroll", handleScroll);
+
+        container?.removeEventListener("mousemove", handleMouseMove);
+        container?.removeEventListener("mousedown", handleMouseDown);
     }
 
     function handleMouseMove(event: MouseEvent) {
@@ -235,7 +236,7 @@
 
         const { width, height } = canvas!.getBoundingClientRect();
 
-        const cameraPos = new Vector3(3 * dx, 2 * dx, 0);
+        const cameraPos = new Vector3(3 * dx, 2 * dx, 1); // If z is zero, 3DCSS is hidden, don't know why
         const far = Math.sqrt(
             Math.pow(cameraPos.x, 2) + Math.pow(cameraPos.y, 2),
         );
@@ -276,6 +277,7 @@
         cssRenderer.domElement.style.position = "absolute";
         cssRenderer.domElement.style.top = "0px";
         cssRenderer.domElement.style.zIndex = "10";
+        cssRenderer.domElement.style.pointerEvents = "none";
 
         canvas?.appendChild(cssRenderer.domElement);
 
@@ -451,7 +453,7 @@
             labelObj.applyMatrix4(
                 new Matrix4().setPosition(
                     2 * (geometry.boundingBox?.max.x ?? 0),
-                    0,
+                    1,
                     0,
                 ),
             );
@@ -502,10 +504,13 @@
                         (obj as Mesh).castShadow = true;
                     }
                 });
+
                 child.applyMatrix4(
                     new Matrix4().makeRotationY(2 * Math.PI * Math.random()),
                 );
+
                 child.applyMatrix4(new Matrix4().setPosition(model[1]));
+
                 return child;
             });
 
