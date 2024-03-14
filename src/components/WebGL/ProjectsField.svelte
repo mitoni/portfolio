@@ -44,6 +44,7 @@
     let container: HTMLElement | undefined = undefined;
     let camera: PerspectiveCamera;
     let scene: Scene;
+    let cssScene: Scene;
     let renderer: WebGLRenderer;
     let cssRenderer: CSS3DRenderer;
 
@@ -247,12 +248,17 @@
 
         camera.lookAt(new Vector3(0, 0, 0));
 
-        scene = new Scene();
-        scene.fog = new Fog(
+        const fog = new Fog(
             `${style.get().getPropertyValue("--colorBg")})`,
             far,
             1.5 * far,
         );
+
+        scene = new Scene();
+        cssScene = new Scene();
+
+        scene.fog = fog;
+        cssScene.fog = fog;
 
         // Setup render passes
         renderer = new WebGLRenderer({ antialias: true, alpha: true });
@@ -269,7 +275,7 @@
 
         cssRenderer.domElement.style.position = "absolute";
         cssRenderer.domElement.style.top = "0px";
-        cssRenderer.domElement.style.zIndex = "0";
+        cssRenderer.domElement.style.zIndex = "10";
 
         canvas?.appendChild(cssRenderer.domElement);
 
@@ -298,7 +304,7 @@
         TWEEN.update();
 
         renderer.render(scene, camera);
-        cssRenderer.render(scene, camera);
+        cssRenderer.render(cssScene, camera);
     }
 
     async function loadModels() {
@@ -441,7 +447,7 @@
             labelContainerEl.appendChild(labelCategoryEl);
 
             const labelObj = new CSS3DObject(labelContainerEl);
-            labelObj.lookAt(camera.position);
+            labelObj.lookAt(new Vector3(1, 1, 0));
             labelObj.applyMatrix4(
                 new Matrix4().setPosition(
                     2 * (geometry.boundingBox?.max.x ?? 0),
@@ -452,7 +458,7 @@
             labelObj.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
             labelObj.receiveShadow = true;
 
-            scene.add(labelObj);
+            cssScene.add(labelObj);
 
             group.applyMatrix4(new Matrix4().makeRotationY(Math.PI / 2));
             group.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
@@ -474,6 +480,11 @@
             ["/models/rocks1.glb", new Vector3(-2 * dx, 0, 0)],
             ["/models/rocks2.glb", new Vector3(dx, 0, dz / 2)],
             ["/models/rocks1.glb", new Vector3(7 * dx, 0, dz / 2)],
+
+            // Birds
+            ["/models/gull.glb", new Vector3(-dx, dx, -dz / 2)],
+            ["/models/gull.glb", new Vector3(3 * dx, dx, dz / 2)],
+            ["/models/gull.glb", new Vector3(6 * dx, dx, -dz / 2)],
 
             // Outside
             ["/models/rocks1.glb", new Vector3(-dx, 0, dz)],
@@ -529,7 +540,13 @@
 <style>
     .projects-container {
         width: 100%;
-        height: 300vh;
+        min-height: 1600px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .projects-container {
+            min-height: 2500px;
+        }
     }
 
     .projects-canvas {
@@ -572,6 +589,7 @@
         filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.05));
 
         pointer-events: all;
+        z-index: 2;
     }
 
     .projects-selected-chip-title {
