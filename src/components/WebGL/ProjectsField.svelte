@@ -260,6 +260,7 @@
         renderer.setSize(width, height);
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = VSMShadowMap;
+        renderer.domElement.style.zIndex = "1";
 
         canvas?.appendChild(renderer.domElement);
 
@@ -268,7 +269,7 @@
 
         cssRenderer.domElement.style.position = "absolute";
         cssRenderer.domElement.style.top = "0px";
-        cssRenderer.domElement.style.zIndex = "-1";
+        cssRenderer.domElement.style.zIndex = "0";
 
         canvas?.appendChild(cssRenderer.domElement);
 
@@ -440,10 +441,16 @@
             labelContainerEl.appendChild(labelCategoryEl);
 
             const labelObj = new CSS3DObject(labelContainerEl);
-            labelObj.lookAt(0, 1, 0);
-            labelObj.position.setZ(2 * (geometry.boundingBox?.max.z ?? 0));
-            labelObj.applyMatrix4(new Matrix4().makeRotationY(Math.PI / 2));
+            labelObj.lookAt(camera.position);
+            labelObj.applyMatrix4(
+                new Matrix4().setPosition(
+                    2 * (geometry.boundingBox?.max.x ?? 0),
+                    0,
+                    0,
+                ),
+            );
             labelObj.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
+            labelObj.receiveShadow = true;
 
             scene.add(labelObj);
 
