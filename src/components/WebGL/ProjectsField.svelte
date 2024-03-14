@@ -1,4 +1,6 @@
 <script lang="ts">
+    import "../../style/three-classes.css"
+
     import { onDestroy, onMount } from "svelte";
     import { getCollection } from "astro:content";
     import {
@@ -29,6 +31,10 @@
     import { style } from "../stores/style";
     import { fly } from "svelte/transition";
     import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+    import {
+        CSS3DObject,
+        CSS3DRenderer,
+    } from "three/addons/renderers/CSS3DRenderer.js";
 
     const loader = new OBJLoader();
     const GltfLoader = new GLTFLoader();
@@ -39,6 +45,7 @@
     let camera: PerspectiveCamera;
     let scene: Scene;
     let renderer: WebGLRenderer;
+    let cssRenderer: CSS3DRenderer;
 
     let fieldLength: number = 0;
     let targetCameraX = 0;
@@ -81,6 +88,7 @@
         camera.updateProjectionMatrix();
 
         renderer.setSize(width, height);
+        cssRenderer.setSize(width, height);
 
         handleScroll();
     }
@@ -89,7 +97,7 @@
         if (!container) return;
 
         const { top, height } = container.getBoundingClientRect();
-        const perc = -(top - window.innerHeight / 2) / (height);
+        const perc = -(top - window.innerHeight / 2) / height;
 
         const move = perc * fieldLength * scrollMult;
         targetCameraX = move;
@@ -255,6 +263,15 @@
 
         canvas?.appendChild(renderer.domElement);
 
+        cssRenderer = new CSS3DRenderer();
+        cssRenderer.setSize(width, height);
+
+        cssRenderer.domElement.style.position = "absolute";
+        cssRenderer.domElement.style.top = "0px";
+        cssRenderer.domElement.style.zIndex = "-1";
+
+        canvas?.appendChild(cssRenderer.domElement);
+
         // load 3d models
         loadModels();
 
@@ -264,13 +281,13 @@
     function animate() {
         requestAnimationFrame(animate);
 
-        // Rotate geometry
+        // Rotate selected geometry
         if (selected) {
             selected.rotateY(0.005);
         }
 
         // Smooth camera movement
-        camera.position.x += (targetCameraX - camera.position.x) * inertia
+        camera.position.x += (targetCameraX - camera.position.x) * inertia;
 
         render();
     }
@@ -278,7 +295,9 @@
     function render() {
         // update TWEEN
         TWEEN.update();
+
         renderer.render(scene, camera);
+        cssRenderer.render(scene, camera);
     }
 
     async function loadModels() {
@@ -387,7 +406,8 @@
         });
 
         geometries.forEach((geometry, i) => {
-            const title = ids[i];
+            const projectId = ids[i];
+            const project = projects.find(p => p.id === projectId);
             const material = baseMaterial.clone();
             const mesh = new Mesh(geometry, material);
             mesh.castShadow = true;
@@ -395,15 +415,37 @@
             const group = new Group();
             group.add(mesh);
 
-            meshes[title] = mesh;
-            mesh.userData.id = ids[i];
-
-            // Move group to Y 0
+            // Move mesh to Y 0
             mesh.applyMatrix4(
                 new Matrix4().setPosition(
                     new Vector3(0, -(geometry.boundingBox?.min?.y ?? 0), 0),
                 ),
             );
+            meshes[projectId] = mesh;
+            mesh.userData.id = ids[i];
+
+            // Project label
+
+            const labelTitleEl = document.createElement("div");
+            labelTitleEl.className = "projects-label-title";
+            labelTitleEl.innerHTML = project?.data.title ?? "";
+
+            const labelCategoryEl = document.createElement("div");
+            labelCategoryEl.className = "projects-label-category";
+            labelCategoryEl.innerHTML = project?.data.category ?? "";
+
+            const labelContainerEl = document.createElement("div");
+            labelContainerEl.className = "projects-label-container";
+            labelContainerEl.appendChild(labelTitleEl);
+            labelContainerEl.appendChild(labelCategoryEl);
+
+            const labelObj = new CSS3DObject(labelContainerEl);
+            labelObj.lookAt(0, 1, 0);
+            labelObj.position.setZ(2 * (geometry.boundingBox?.max.z ?? 0));
+            labelObj.applyMatrix4(new Matrix4().makeRotationY(Math.PI / 2));
+            labelObj.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
+
+            scene.add(labelObj);
 
             group.applyMatrix4(new Matrix4().makeRotationY(Math.PI / 2));
             group.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
@@ -557,3 +599,4 @@
         }
     }
 </style>
+
