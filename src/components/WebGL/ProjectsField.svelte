@@ -277,7 +277,6 @@
 
         cssRenderer.domElement.style.position = "absolute";
         cssRenderer.domElement.style.top = "0px";
-        cssRenderer.domElement.style.zIndex = "10";
         cssRenderer.domElement.style.pointerEvents = "none";
         cssRenderer.domElement.style.zIndex = "0";
 
@@ -596,7 +595,7 @@
         filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.05));
 
         pointer-events: all;
-        z-index: 2;
+        z-index: 9;
     }
 
     .projects-selected-chip-title {
