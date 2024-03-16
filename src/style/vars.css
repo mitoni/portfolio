@@ -70,6 +70,9 @@
     --colorLinkBg: rgb(var(--white));
 
     --colorStrikethrough: rgb(var(--red));
+
+    --colorPrimaryModels: rgb(var(--darkGray));
+    --colorSecondaryModels: rgb(var(--warmWhite));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -94,6 +97,9 @@
         --colorNavbarBg: rgba(var(--almostBlack), 0.55);
 
         --colorLinkBg:  rgb(var(--white));
+
+        --colorPrimaryModels: rgb(var(--warmWhite));
+        --colorSecondaryModels: rgb(var(--darkGray));
     }
 }
 

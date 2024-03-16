@@ -210,7 +210,7 @@
                                             `rgb(${style
                                                 .get()
                                                 .getPropertyValue(
-                                                    "--darkGray",
+                                                    "--colorPrimaryModels",
                                                 )})`,
                                         ),
                                     },
@@ -413,7 +413,7 @@
         const baseMaterial = new MeshMatcapMaterial({
             matcap: texture,
             side: DoubleSide,
-            color: `rgb(${style.get().getPropertyValue("--darkGray")})`,
+            color: `rgb(${style.get().getPropertyValue("--colorPrimaryModels")})`,
         });
 
         geometries.forEach((geometry, i) => {
@@ -474,7 +474,7 @@
         const modelsMaterial = new MeshMatcapMaterial({
             matcap: texture,
             side: DoubleSide,
-            color: `rgb(${style.get().getPropertyValue("--warmWhite")})`,
+            color: `rgb(${style.get().getPropertyValue("--colorSecondaryModels")})`,
         });
 
         const models: [string, Vector3][] = [
