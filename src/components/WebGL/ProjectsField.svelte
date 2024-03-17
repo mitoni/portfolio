@@ -5,6 +5,9 @@
     import { getCollection } from "astro:content";
     import {
         AmbientLight,
+        AnimationMixer,
+        AnimationObjectGroup,
+        Clock,
         Color,
         DirectionalLight,
         DoubleSide,
@@ -47,6 +50,10 @@
     let cssScene: Scene;
     let renderer: WebGLRenderer;
     let cssRenderer: CSS3DRenderer;
+
+    let animGroup: AnimationObjectGroup;
+    let mixer: AnimationMixer;
+    let clock: Clock;
 
     let fieldLength: number = 0;
     let targetCameraX = 0;
@@ -282,6 +289,10 @@
 
         canvas?.appendChild(cssRenderer.domElement);
 
+        animGroup = new AnimationObjectGroup();
+        mixer = new AnimationMixer(animGroup);
+        clock = new Clock();
+
         // load 3d models
         loadModels();
 
@@ -295,6 +306,8 @@
         if (selected) {
             selected.rotateY(0.005);
         }
+
+        mixer.update(clock.getDelta());
 
         // Smooth camera movement
         camera.position.x += (targetCameraX - camera.position.x) * inertia;
@@ -486,6 +499,7 @@
 
             // Birds
             ["/models/gull.glb", new Vector3(-dx, dx, -dz / 2)],
+            ["/models/gull.glb", new Vector3(dx, dx, -dz / 2)],
             ["/models/gull.glb", new Vector3(3 * dx, dx, dz / 2)],
             ["/models/gull.glb", new Vector3(6 * dx, dx, -dz / 2)],
 
@@ -498,6 +512,8 @@
 
         models.forEach(async (model) => {
             const obj = await GltfLoader.loadAsync(model[0]);
+            const animations = obj.animations;
+
             const objects = obj.scene.children.map((child) => {
                 child.traverse((obj) => {
                     if (obj.type === "Mesh") {
@@ -506,16 +522,27 @@
                     }
                 });
 
-                child.applyMatrix4(
-                    new Matrix4().makeRotationY(2 * Math.PI * Math.random()),
-                );
-
-                child.applyMatrix4(new Matrix4().setPosition(model[1]));
+                if (animations.length) {
+                    animations.forEach((anim) => {
+                        animGroup.add(child);
+                        mixer.clipAction(anim).play();
+                    });
+                }
 
                 return child;
             });
 
-            scene.add(...objects);
+            const group = new Group();
+
+            group.applyMatrix4(
+                new Matrix4().makeRotationY(2 * Math.PI * Math.random()),
+            );
+
+            group.applyMatrix4(new Matrix4().setPosition(model[1]));
+
+            group.add(...objects);
+
+            scene.add(group);
         });
     }
 </script>
