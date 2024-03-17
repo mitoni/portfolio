@@ -207,11 +207,11 @@
                                 .to(
                                     {
                                         color: new Color(
-                                            `rgb(${style
+                                            `${style
                                                 .get()
                                                 .getPropertyValue(
                                                     "--colorPrimaryModels",
-                                                )})`,
+                                                )}`,
                                         ),
                                     },
                                     morphingTime,
@@ -412,7 +412,7 @@
         const baseMaterial = new MeshMatcapMaterial({
             matcap: texture,
             side: DoubleSide,
-            color: `rgb(${style.get().getPropertyValue("--colorPrimaryModels")})`,
+            color: `${style.get().getPropertyValue("--colorPrimaryModels")}`,
         });
 
         geometries.forEach((geometry, i) => {
@@ -473,7 +473,7 @@
         const modelsMaterial = new MeshMatcapMaterial({
             matcap: texture,
             side: DoubleSide,
-            color: `rgb(${style.get().getPropertyValue("--colorSecondaryModels")})`,
+            color: `${style.get().getPropertyValue("--colorSecondaryModels")}`,
         });
 
         const models: [string, Vector3][] = [
