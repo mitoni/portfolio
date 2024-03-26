@@ -603,6 +603,8 @@
         align-items: center;
 
         pointer-events: none;
+
+        z-index: 9;
     }
 
     .projects-selected-chip {
@@ -622,7 +624,6 @@
         filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.05));
 
         pointer-events: all;
-        z-index: 9;
     }
 
     .projects-selected-chip-title {
