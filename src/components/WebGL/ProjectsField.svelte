@@ -18,12 +18,10 @@
         MeshMatcapMaterial,
         PerspectiveCamera,
         PlaneGeometry,
-        Raycaster,
         Scene,
         ShadowMaterial,
         TextureLoader,
         VSMShadowMap,
-        Vector2,
         Vector3,
         WebGLRenderer,
     } from "three";
@@ -64,7 +62,7 @@
     let selected: Mesh | undefined = undefined;
     let projects: Awaited<ReturnType<typeof getCollection<"projects">>>;
 
-    const raycaster = new Raycaster();
+    // const raycaster = new Raycaster();
 
     const dz = 2000;
     // const dx = (dz * Math.sqrt(3)) / 2;
@@ -83,7 +81,8 @@
     // }
 
     $: displayProject = projects?.find((project) => {
-        return project.id === selected?.userData?.id;
+        // return project.id === selected?.userData?.id;
+        return project.id === selected?.name;
     });
 
     onMount(init);
@@ -129,116 +128,198 @@
         window.removeEventListener("resize", handleResize);
         window.removeEventListener("scroll", handleScroll);
 
-        container?.removeEventListener("mousemove", handleMouseMove);
+        // container?.removeEventListener("mousemove", handleMouseMove);
         // container?.removeEventListener("mousedown", handleMouseDown);
     }
 
-    function handleMouseMove(event: MouseEvent) {
-        const canvasBounds = renderer.domElement.getBoundingClientRect();
-
-        const x =
-            ((event.clientX - canvasBounds.left) /
-                (canvasBounds.right - canvasBounds.left)) *
-                2 -
-            1;
-        const y =
-            -(
-                (event.clientY - canvasBounds.top) /
-                (canvasBounds.bottom - canvasBounds.top)
-            ) *
-                2 +
-            1;
-
-        raycaster.setFromCamera(new Vector2(x, y), camera);
-
-        const intersects = raycaster.intersectObjects(
-            Object.values(meshes),
-            false,
+    function handleMouseEnter(event: MouseEvent) {
+        const name = (event.target as HTMLAnchorElement).getAttribute(
+            "data-project-id",
         );
-        const first = intersects[0]?.object as Mesh;
 
-        // Early return on same objecs being hit
-        if (first && selected && first.id === selected.id) return;
+        if (name === selected?.name) return; // Happens when going from roof to side of <a> element
 
-        if (first) {
-            // Debounce selected
-            setTimeout(() => {
-                if (!selected) return;
+        const first = scene.getObjectByName(name ?? "") as Mesh;
 
-                new TWEEN.Tween(selected.parent)
-                    .to(
-                        {
-                            scale: new Vector3(
-                                targetScale,
-                                targetScale,
-                                targetScale,
-                            ),
-                        },
-                        debounceTime,
-                    )
-                    .easing(TWEEN.Easing.Exponential.InOut)
-                    .start();
+        if (!first) return;
 
-                new TWEEN.Tween(selected.material as MeshMatcapMaterial)
-                    .to(
-                        {
-                            color: new Color(
-                                `rgb(${style.get().getPropertyValue("--red")})`,
-                            ),
-                        },
-                        morphingTime,
-                    )
-                    .easing(TWEEN.Easing.Exponential.InOut)
-                    .start();
-            }, debounceTime);
+        // Debounce selected
+        setTimeout(() => {
+            if (!selected) return;
 
-            selected = first;
-        } else {
-            if (selected) {
-                setTimeout(() => {
-                    const back = Object.values(meshes).filter((mesh) => {
-                        return mesh !== selected && mesh.parent!.scale.x > 1;
-                    });
+            new TWEEN.Tween(selected.parent)
+                .to(
+                    {
+                        scale: new Vector3(
+                            targetScale,
+                            targetScale,
+                            targetScale,
+                        ),
+                    },
+                    debounceTime,
+                )
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start();
 
-                    if (back.length > 0) {
-                        back.forEach((mesh) => {
-                            new TWEEN.Tween(mesh.parent)
-                                .to(
-                                    { scale: new Vector3(1, 1, 1) },
-                                    morphingTime,
-                                )
-                                .easing(TWEEN.Easing.Exponential.InOut)
-                                .start();
+            new TWEEN.Tween(selected.material as MeshMatcapMaterial)
+                .to(
+                    {
+                        color: new Color(
+                            `rgb(${style.get().getPropertyValue("--red")})`,
+                        ),
+                    },
+                    morphingTime,
+                )
+                .easing(TWEEN.Easing.Exponential.InOut)
+                .start();
+        }, debounceTime);
 
-                            new TWEEN.Tween(mesh.material as MeshMatcapMaterial)
-                                .to(
-                                    {
-                                        color: new Color(
-                                            `${style
-                                                .get()
-                                                .getPropertyValue(
-                                                    "--colorPrimaryModels",
-                                                )}`,
-                                        ),
-                                    },
-                                    morphingTime,
-                                )
-                                .easing(TWEEN.Easing.Exponential.InOut)
-                                .start();
-                        });
-                    }
-                }, debounceTime);
-            }
-
-            selected = undefined;
-        }
+        selected = first;
     }
+
+    function handleMouseLeave() {
+        if (!selected) return;
+
+        setTimeout(() => {
+            const back = Object.values(meshes).filter((mesh) => {
+                return mesh !== selected && mesh.parent!.scale.x > 1;
+            });
+
+            if (back.length > 0) {
+                back.forEach((mesh) => {
+                    new TWEEN.Tween(mesh.parent)
+                        .to({ scale: new Vector3(1, 1, 1) }, morphingTime)
+                        .easing(TWEEN.Easing.Exponential.InOut)
+                        .start();
+
+                    new TWEEN.Tween(mesh.material as MeshMatcapMaterial)
+                        .to(
+                            {
+                                color: new Color(
+                                    `${style
+                                        .get()
+                                        .getPropertyValue(
+                                            "--colorPrimaryModels",
+                                        )}`,
+                                ),
+                            },
+                            morphingTime,
+                        )
+                        .easing(TWEEN.Easing.Exponential.InOut)
+                        .start();
+                });
+            }
+        }, debounceTime);
+
+        selected = undefined;
+    }
+
+    // function handleMouseMove(event: MouseEvent) {
+    //     const canvasBounds = renderer.domElement.getBoundingClientRect();
+
+    //     const x =
+    //         ((event.clientX - canvasBounds.left) /
+    //             (canvasBounds.right - canvasBounds.left)) *
+    //             2 -
+    //         1;
+    //     const y =
+    //         -(
+    //             (event.clientY - canvasBounds.top) /
+    //             (canvasBounds.bottom - canvasBounds.top)
+    //         ) *
+    //             2 +
+    //         1;
+
+    //     raycaster.setFromCamera(new Vector2(x, y), camera);
+
+    //     const intersects = raycaster.intersectObjects(
+    //         Object.values(meshes),
+    //         false,
+    //     );
+    //     const first = intersects[0]?.object as Mesh;
+
+    //     // Early return on same objecs being hit
+    //     if (first && selected && first.id === selected.id) return;
+
+    //     if (first) {
+    //         // Debounce selected
+    //         setTimeout(() => {
+    //             if (!selected) return;
+
+    //             new TWEEN.Tween(selected.parent)
+    //                 .to(
+    //                     {
+    //                         scale: new Vector3(
+    //                             targetScale,
+    //                             targetScale,
+    //                             targetScale,
+    //                         ),
+    //                     },
+    //                     debounceTime,
+    //                 )
+    //                 .easing(TWEEN.Easing.Exponential.InOut)
+    //                 .start();
+
+    //             new TWEEN.Tween(selected.material as MeshMatcapMaterial)
+    //                 .to(
+    //                     {
+    //                         color: new Color(
+    //                             `rgb(${style.get().getPropertyValue("--red")})`,
+    //                         ),
+    //                     },
+    //                     morphingTime,
+    //                 )
+    //                 .easing(TWEEN.Easing.Exponential.InOut)
+    //                 .start();
+    //         }, debounceTime);
+
+    //         selected = first;
+    //     } else {
+    //         if (selected) {
+    //             setTimeout(() => {
+    //                 const back = Object.values(meshes).filter((mesh) => {
+    //                     return mesh !== selected && mesh.parent!.scale.x > 1;
+    //                 });
+
+    //                 if (back.length > 0) {
+    //                     back.forEach((mesh) => {
+    //                         new TWEEN.Tween(mesh.parent)
+    //                             .to(
+    //                                 { scale: new Vector3(1, 1, 1) },
+    //                                 morphingTime,
+    //                             )
+    //                             .easing(TWEEN.Easing.Exponential.InOut)
+    //                             .start();
+
+    //                         new TWEEN.Tween(mesh.material as MeshMatcapMaterial)
+    //                             .to(
+    //                                 {
+    //                                     color: new Color(
+    //                                         `${style
+    //                                             .get()
+    //                                             .getPropertyValue(
+    //                                                 "--colorPrimaryModels",
+    //                                             )}`,
+    //                                     ),
+    //                                 },
+    //                                 morphingTime,
+    //                             )
+    //                             .easing(TWEEN.Easing.Exponential.InOut)
+    //                             .start();
+    //                     });
+    //                 }
+    //             }, debounceTime);
+    //         }
+
+    //         selected = undefined;
+    //     }
+    // }
 
     function init() {
         window.addEventListener("resize", handleResize);
         window.addEventListener("scroll", handleScroll);
 
-        container?.addEventListener("mousemove", handleMouseMove);
+        // container?.addEventListener("mousemove", handleMouseMove);
         // container?.addEventListener("mousedown", handleMouseDown);
 
         const { width, height } = canvas!.getBoundingClientRect();
@@ -445,7 +526,8 @@
                 ),
             );
             meshes[projectId] = mesh;
-            mesh.userData.id = ids[i];
+            // mesh.userData.id = ids[i];
+            mesh.name = ids[i];
 
             // Project label
 
@@ -484,13 +566,12 @@
 
             const linksGroup = new Group();
 
+            const linkEls: HTMLAnchorElement[] = [];
             // Front
             const linkElFront = document.createElement("a");
-            linkElFront.href = `/projects/${projectId}`;
-            linkElFront.setAttribute("data-astro-prefetch", "hover");
-
             linkElFront.style.width = `${hMax}px`;
             linkElFront.style.height = `${height}px`;
+            linkEls.push(linkElFront);
 
             const linkObjFront = new CSS3DObject(linkElFront);
             linkObjFront.rotateY(Math.PI / 2);
@@ -499,19 +580,28 @@
 
             // Top
             const linkElTop = document.createElement("a");
-            linkElTop.href = `/projects/${projectId}`;
-            linkElTop.setAttribute("data-astro-prefetch", "hover");
-
             linkElTop.style.width = `${hMax}px`;
             linkElTop.style.height = `${hMax}px`;
+            linkEls.push(linkElTop);
 
             const linkObjTop = new CSS3DObject(linkElTop);
             linkObjTop.applyMatrix4(
-                new Matrix4().setPosition(new Vector3(-hMax / 2, height / 2, 0)),
+                new Matrix4().setPosition(
+                    new Vector3(-hMax / 2, height / 2, 0),
+                ),
             );
             linkObjTop.rotateX(Math.PI / 2);
 
             linksGroup.add(linkObjTop);
+
+            linkEls.forEach((el) => {
+                el.href = `/projects/${projectId}`;
+                el.setAttribute("data-astro-prefetch", "hover");
+                el.setAttribute("data-project-id", projectId);
+
+                el.onmouseenter = handleMouseEnter;
+                el.onmouseleave = handleMouseLeave;
+            });
 
             linksGroup.scale.set(targetScale, targetScale, targetScale);
             linksGroup.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
