@@ -80,10 +80,22 @@
     //     }
     // }
 
-    $: displayProject = projects?.find((project) => {
-        // return project.id === selected?.userData?.id;
-        return project.id === selected?.name;
-    });
+    let displayProject: object | undefined = undefined;
+    let _displayProject: object | undefined = undefined;
+    function doThings() {
+        const project = projects?.find((project) => {
+            return project.id === selected?.name;
+        });
+
+        setTimeout(() => {
+            if (_displayProject !== displayProject) {
+                displayProject = _displayProject;
+            }
+        }, debounceTime);
+
+        _displayProject = project;
+    }
+    $: selected, doThings();
 
     onMount(init);
     onDestroy(cleanup);
