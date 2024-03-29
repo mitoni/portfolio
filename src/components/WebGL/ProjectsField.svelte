@@ -74,13 +74,13 @@
     const morphingTime = 250;
     const debounceTime = 100;
 
-    $: {
-        if (selected) {
-            document.body.style.cursor = "pointer";
-        } else {
-            document.body.style.cursor = "unset";
-        }
-    }
+    // $: {
+    //     if (selected) {
+    //         document.body.style.cursor = "pointer";
+    //     } else {
+    //         document.body.style.cursor = "unset";
+    //     }
+    // }
 
     $: displayProject = projects?.find((project) => {
         return project.id === selected?.userData?.id;
@@ -111,10 +111,10 @@
         targetCameraX = move;
     }
 
-    function handleMouseDown() {
-        if (!displayProject) return;
-        window.location.href = `/projects/${displayProject.id}`;
-    }
+    // function handleMouseDown() {
+    //     if (!displayProject) return;
+    //     window.location.href = `/projects/${displayProject.id}`;
+    // }
 
     function cleanup() {
         for (const mesh of Object.values(meshes)) {
@@ -130,7 +130,7 @@
         window.removeEventListener("scroll", handleScroll);
 
         container?.removeEventListener("mousemove", handleMouseMove);
-        container?.removeEventListener("mousedown", handleMouseDown);
+        // container?.removeEventListener("mousedown", handleMouseDown);
     }
 
     function handleMouseMove(event: MouseEvent) {
@@ -239,7 +239,7 @@
         window.addEventListener("scroll", handleScroll);
 
         container?.addEventListener("mousemove", handleMouseMove);
-        container?.addEventListener("mousedown", handleMouseDown);
+        // container?.addEventListener("mousedown", handleMouseDown);
 
         const { width, height } = canvas!.getBoundingClientRect();
 
@@ -284,8 +284,8 @@
 
         cssRenderer.domElement.style.position = "absolute";
         cssRenderer.domElement.style.top = "0px";
-        cssRenderer.domElement.style.pointerEvents = "none";
-        cssRenderer.domElement.style.zIndex = "0";
+        // cssRenderer.domElement.style.pointerEvents = "none";
+        cssRenderer.domElement.style.zIndex = "2";
 
         canvas?.appendChild(cssRenderer.domElement);
 
@@ -472,9 +472,51 @@
                 ),
             );
             labelObj.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
-            labelObj.receiveShadow = true;
 
             cssScene.add(labelObj);
+
+            // Wrapper link element
+            const size = new Vector3();
+            geometry.boundingBox?.getSize(size);
+
+            const hMax = Math.max(size.x, size.z);
+            const height = size.y;
+
+            const linksGroup = new Group();
+
+            // Front
+            const linkElFront = document.createElement("a");
+            linkElFront.href = `/projects/${projectId}`;
+            linkElFront.setAttribute("data-astro-prefetch", "hover");
+
+            linkElFront.style.width = `${hMax}px`;
+            linkElFront.style.height = `${height}px`;
+
+            const linkObjFront = new CSS3DObject(linkElFront);
+            linkObjFront.rotateY(Math.PI / 2);
+
+            linksGroup.add(linkObjFront);
+
+            // Top
+            const linkElTop = document.createElement("a");
+            linkElTop.href = `/projects/${projectId}`;
+            linkElTop.setAttribute("data-astro-prefetch", "hover");
+
+            linkElTop.style.width = `${hMax}px`;
+            linkElTop.style.height = `${hMax}px`;
+
+            const linkObjTop = new CSS3DObject(linkElTop);
+            linkObjTop.applyMatrix4(
+                new Matrix4().setPosition(new Vector3(-hMax / 2, height / 2, 0)),
+            );
+            linkObjTop.rotateX(Math.PI / 2);
+
+            linksGroup.add(linkObjTop);
+
+            linksGroup.scale.set(targetScale, targetScale, targetScale);
+            linksGroup.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
+
+            cssScene.add(linksGroup);
 
             group.applyMatrix4(new Matrix4().makeRotationY(Math.PI / 2));
             group.applyMatrix4(new Matrix4().setPosition(basePoints[i]));
