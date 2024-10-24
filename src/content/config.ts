@@ -5,6 +5,7 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      year: z.optional(z.number()),
       category: z.enum([
         "product",
         "software",

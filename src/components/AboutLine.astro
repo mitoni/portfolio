@@ -1,14 +1,23 @@
 ---
-import { HTMLAttributes } from "astro/types";
+import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"div"> {
     title: string;
     description?: string;
     url?: string;
     date?: string;
+    location?: string;
 }
 
-const { title, description, url, date, class: cls, ...props } = Astro.props;
+const {
+    title,
+    description,
+    url,
+    date,
+    location,
+    class: cls,
+    ...props
+} = Astro.props;
 ---
 
 <style>
@@ -41,6 +50,12 @@ const { title, description, url, date, class: cls, ...props } = Astro.props;
         color: var(--colorTextSecondary);
     }
 
+    .about-line-location {
+        color: var(--colorTextSecondary);
+        font-size: var(--fontSizeSm);
+        align-self: flex-end;
+    }
+
     .about-line-date {
         color: var(--colorTextSecondary);
         font-size: var(--fontSizeSm);
@@ -62,10 +77,20 @@ const { title, description, url, date, class: cls, ...props } = Astro.props;
             {
                 description ? (
                     url ? (
-                        <a class="about-line-link" href={url} target="_blank">{description}</a>
+                        <a class="about-line-link" href={url} target="_blank">
+                            {description}
+                        </a>
                     ) : (
-                        <span class="about-line-description">{description}</span>
+                        <span class="about-line-description">
+                            {description}
+                        </span>
                     )
+                ) : null
+            }
+
+            {
+                location ? (
+                    <span class="about-line-location">_ {location}</span>
                 ) : null
             }
         </div>

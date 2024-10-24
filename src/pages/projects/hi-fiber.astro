@@ -14,6 +14,7 @@ const project = await getEntry("projects", "hi-fiber");
 <ProjectLayout>
     <ProjectHero
         title={project.data.title}
+        year={project.data.year}
         subtitle={project.data.subtitle}
         category={project.data.category}
         cover={project.data.cover}
@@ -60,14 +61,18 @@ const project = await getEntry("projects", "hi-fiber");
 
         <Flex slot="col2">
             <CustomImage
-                src={import("../../assets/projects/hi-fiber/hi-fiber-croc-front.jpg")}
+                src={import(
+                    "../../assets/projects/hi-fiber/hi-fiber-croc-front.jpg"
+                )}
                 alt="Hi-Fiber with pliers from front"
                 width={1920}
                 height={1200}
             />
 
             <CustomImage
-                src={import("../../assets/projects/hi-fiber/hi-fiber-falling-multiple.jpg")}
+                src={import(
+                    "../../assets/projects/hi-fiber/hi-fiber-falling-multiple.jpg"
+                )}
                 alt="Multiple Hi-Fiber falling"
                 width={1920}
                 height={1200}
@@ -111,7 +116,9 @@ const project = await getEntry("projects", "hi-fiber");
 
         <CustomImage
             slot="col1"
-            src={import("../../assets/projects/hi-fiber/hi-fiber-product-line.jpg")}
+            src={import(
+                "../../assets/projects/hi-fiber/hi-fiber-product-line.jpg"
+            )}
             alt="Hi-Fiber product line"
             width={1920}
             height={1200}
@@ -164,7 +171,9 @@ const project = await getEntry("projects", "hi-fiber");
         <CustomImage
             blend
             slot="col2"
-            src={import("../../assets/projects/hi-fiber/hi-fiber-tutorials.jpg")}
+            src={import(
+                "../../assets/projects/hi-fiber/hi-fiber-tutorials.jpg"
+            )}
             alt="Hi-Fiber CAD Software"
             width={1920}
             height={1200}

@@ -15,6 +15,7 @@ const project = await getEntry("projects", "atropos");
 <ProjectLayout>
     <ProjectHero
         title={project.data.title}
+        year={project.data.year}
         subtitle={project.data.subtitle}
         category={project.data.category}
         cover={project.data.cover}
@@ -34,6 +35,14 @@ const project = await getEntry("projects", "atropos");
         <Image
             class="logo"
             src={import("../../assets/projects/atropos/3dprint-logo.png")}
+            alt="3D Print logo"
+            width={100}
+            height={100}
+        />
+
+        <Image
+            class="logo"
+            src={import("../../assets/projects/atropos/voxel-logo.png")}
             alt="3D Print logo"
             width={100}
             height={100}

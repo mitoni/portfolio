@@ -16,6 +16,7 @@ const project = await getEntry("projects", "v");
 <ProjectLayout>
     <ProjectHero
         title={project.data.title}
+        year={project.data.year}
         subtitle={project.data.subtitle}
         category={project.data.category}
         cover={project.data.cover}
@@ -145,8 +146,8 @@ const project = await getEntry("projects", "v");
                 the chain, the necklace is printed in sequence. First, the base
                 is realized, leaving space for the chain that will be
                 subsequently positioned by a human. Molten plastic is poured by
-                the 3D printer onto the chain to solidify the connection, and then
-                the rest of the ruled geometry is completed on top.
+                the 3D printer onto the chain to solidify the connection, and
+                then the rest of the ruled geometry is completed on top.
             </p>
         </div>
     </ColsRight>

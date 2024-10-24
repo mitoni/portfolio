@@ -13,6 +13,7 @@ const project = await getEntry("projects", "hi-design");
 <ProjectLayout>
     <ProjectHero
         title={project.data.title}
+        year={project.data.year}
         subtitle={project.data.subtitle}
         category={project.data.category}
         cover={project.data.cover}
@@ -109,6 +110,7 @@ const project = await getEntry("projects", "hi-design");
                 Therefore, we have consciously designed the workflow and
                 features of Hi-Design to mirror those of the industry leaders,
                 <a href="https://www.3shape.com/" target="_blank">3Shape</a> and
+
                 <a href="https://exocad.com/" target="_blank">Exocad</a>.
             </p>
 
