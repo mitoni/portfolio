@@ -7,8 +7,6 @@ import CustomImage from "../../components/CustomImage.astro";
 import ColsRight from "../../components/rows/ColsRight.astro";
 import Video from "../../components/Video.astro";
 import Flex from "../../components/rows/Flex.astro";
-import Centered from "../../components/rows/Centered.astro";
-import { Image } from "astro:assets";
 
 const project = await getEntry("projects", "non-planar-slicing");
 ---
@@ -69,23 +67,12 @@ const project = await getEntry("projects", "non-planar-slicing");
             />
         </Flex>
 
-        <Flex slot="col2" align="stretch">
-            <CustomImage
-                src={import(
-                    "../../assets/projects/nls/wing-print-sequence.gif"
-                )}
-                alt="Non planar 3D printed infill"
-                width={800}
-                height={675}
+        <Flex slot="col2">
+            <Video
                 blend
-            />
-
-            <CustomImage
-                src={import("../../assets/projects/nls/ldm-infill-print.jpg")}
-                alt="Non planar 3D printed infill"
-                width={1280}
-                height={854}
-                blend
+                autoplay
+                loop
+                src="/assets/projects/nls/3d-printing.mp4"
             />
         </Flex>
     </ColsLeft>
